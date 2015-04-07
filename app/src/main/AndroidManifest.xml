@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.amy.hydrate" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".loading_page"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_loading_page"
+            android:theme="@style/FullscreenTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".change_floors"
+            android:label="@string/title_activity_change_floors" >
+        </activity>
+        <activity
+            android:name=".rating"
+            android:label="@string/title_activity_rating"
+            android:parentActivityName=".change_floors" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".change_floors" >
+            </meta-data>
+        </activity>
+        <activity
+            android:name=".bumap"
+            android:label="@string/title_activity_bumap" >
+        </activity>
+    </application>
+
+</manifest>
