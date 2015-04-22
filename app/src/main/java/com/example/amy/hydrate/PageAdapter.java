@@ -13,7 +13,7 @@ class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int arg0) {
         // TODO Auto-generated method stub
-        switch (arg0) {
+        switch (arg0) { 
             case 0:
                 return new frag_first_floor();
             case 1:
@@ -41,7 +41,7 @@ class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return 3;
+        return 9;
     }
 
 
