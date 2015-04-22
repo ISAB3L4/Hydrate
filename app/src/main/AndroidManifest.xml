@@ -18,21 +18,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".change_floors"
+            android:name=".floor_swipe"
             android:label="@string/title_activity_change_floors" >
         </activity>
         <activity
             android:name=".rating"
             android:label="@string/title_activity_rating"
-            android:parentActivityName=".change_floors" >
+            android:parentActivityName=".floor_swipe" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".change_floors" >
+                android:value=".floor_swipe" >
             </meta-data>
-        </activity>
-        <activity
-            android:name=".bumap"
-            android:label="@string/title_activity_bumap" >
         </activity>
     </application>
 
