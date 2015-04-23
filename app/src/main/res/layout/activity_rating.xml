@@ -20,7 +20,7 @@
         <TextSwitcher
             android:layout_width="match_parent"
             android:layout_height="185dp"/>
-        </LinearLayout>
+    </LinearLayout>
 
         
     <TextView android:text="@string/rate"
