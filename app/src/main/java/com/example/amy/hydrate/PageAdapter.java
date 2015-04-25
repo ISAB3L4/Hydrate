@@ -41,8 +41,35 @@ class PagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
-
     @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Basement";
+            case 1:
+                return "First Floor";
+            case 2:
+                return "Second Floor";
+            case 3:
+                return "Third Floor";
+            case 4:
+                return "Fourth Floor";
+            case 5:
+                return "Fifth Floor";
+            case 6:
+                return "Sixth Floor";
+            case 7:
+                return "seventh Floor";
+            case 8:
+                return "Eighth Floor";
+            case 9:
+                return "Ninth Floor";
+
+        }
+
+        return null;
+    }
+        @Override
     public int getCount() {
         // TODO Auto-generated method stub
         return 10   ;

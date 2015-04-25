@@ -13,5 +13,7 @@ public class floor_swipe extends FragmentActivity {
         viewpager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter padapter = new PagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(padapter);
+
+
     }
 }
