@@ -5,12 +5,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".loading_page"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_loading_page"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +20,14 @@
         </activity>
         <activity
             android:name=".floor_swipe"
-            android:label="@string/title_activity_change_floors" >
+            android:label="@string/title_activity_change_floors"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".rating"
             android:label="@string/title_activity_rating"
-            android:parentActivityName=".floor_swipe" >
+            android:parentActivityName=".floor_swipe"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".floor_swipe" >
@@ -53,9 +56,6 @@
     <uses-permission
         android:required="true"
         android:name="android.permission.INTERNET"/>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
 </manifest>
 

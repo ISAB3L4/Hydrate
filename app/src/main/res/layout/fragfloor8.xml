@@ -4,32 +4,30 @@
     android:layout_height="match_parent"
     android:background="@drawable/floor8">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/f_b_1"
+        android:clickable="true"
+        android:alpha="0"
+        android:layout_above="@+id/f_8_3"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/f_8_1"
+        android:id="@+id/f_b_2"
         android:clickable="true"
-        android:alpha="0"/>
+        android:alpha="0"
+        android:layout_below="@+id/f_8_2"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/f_8_2"
+        android:id="@+id/f_b_3"
         android:clickable="true"
-        android:alpha="0" />
-
-    <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/f_8_3"
-        android:clickable="true"
-        android:alpha="0" />
-    </RelativeLayout>
-
-
+        android:alpha="0"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/f_8_1" />
 </FrameLayout>
