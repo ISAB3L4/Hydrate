@@ -9,45 +9,37 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.app.Activity;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
-public class frag_first_floor extends Fragment {
+public class frag_first_floor extends Fragment
+{
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (container == null)
+        {
+            return null;
+        }
+
         // TODO Auto-generated method stub
-        return inflater.inflate(R.layout.floorfrag1, container, false);
-    }
+        LinearLayout view =(LinearLayout) inflater.inflate(R.layout.floorfrag1, container, false);
 
-    public class loading_page extends Activity implements OnClickListener {
-        private Button floor_1_1;
+        ImageButton floor_1_1 = (ImageButton) view.findViewById(R.id.f_1_1);
+        floor_1_1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            //The super keyword is used to refer to the parent class in java
-            super.onCreate(savedInstanceState);
+                Intent resultActivity = new Intent(getActivity(), rating.class);
 
-            //How the activity actually looks is inside main.xml, inside the layout folder
-            setContentView(R.layout.floorfrag1);
+                //Launches the new activity
+                getActivity().startActivity(resultActivity);
+            }
+        });
 
-            //The buttons have parameters corresponding to the IDs in Main.xml
-            floor_1_1 = (Button) findViewById(R.id.f_1_1);
-
-            floor_1_1.setOnClickListener(this);
-
-        }
-        @Override
-
-        public void onClick(View v) {
-            launchResultActivity();
-        }
-
-        private void launchResultActivity() {
-
-            Intent resultActivity = new Intent(getActivity(), rating.class);
-
-            //Launches the new activity
-            startActivity(resultActivity);
-        }
+        return view;
     }
 
 }
