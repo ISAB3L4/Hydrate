@@ -59,7 +59,7 @@ class PagerAdapter extends FragmentPagerAdapter {
             case 6:
                 return "Sixth Floor";
             case 7:
-                return "seventh Floor";
+                return "Seventh Floor";
             case 8:
                 return "Eighth Floor";
             case 9:
