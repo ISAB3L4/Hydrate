@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/floor1">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <Button
         android:layout_width="50dp"
@@ -30,5 +33,7 @@
         android:alpha="0"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/f_1_1" />
+
+    </RelativeLayout>
 
 </FrameLayout>
