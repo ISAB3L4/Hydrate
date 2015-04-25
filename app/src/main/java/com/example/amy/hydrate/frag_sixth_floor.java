@@ -20,7 +20,7 @@ public class frag_sixth_floor extends Fragment
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View InputFragmentView = inflater.inflate(R.layout.fragfloor6, container, false);
-        floor_6_1 = (ImageButton) InputFragmentView.findViewById(R.id.f_6_1);
+        floor_6_1 = (Button) InputFragmentView.findViewById(R.id.f_6_1);
 
         floor_6_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,7 +31,7 @@ public class frag_sixth_floor extends Fragment
             }
         });
 
-        floor_6_2 = (ImageButton) InputFragmentView.findViewById(R.id.f_6_2);
+        floor_6_2 = (Button) InputFragmentView.findViewById(R.id.f_6_2);
 
         floor_6_2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +42,7 @@ public class frag_sixth_floor extends Fragment
             }
         });
 
-        floor_6_3 = (ImageButton) InputFragmentView.findViewById(R.id.f_6_3);
+        floor_6_3 = (Button) InputFragmentView.findViewById(R.id.f_6_3);
 
         floor_6_3.setOnClickListener(new View.OnClickListener() {
             @Override
