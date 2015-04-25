@@ -42,9 +42,9 @@ public class rating extends Activity {
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     private RatingBar ratingBar;
-    private TextView txtRatingValue;
+    //private TextView txtRatingValue;
     private Button btnSubmit;
-   //public String stringUrl = "http://4gp.tw/ba3c/1429967297326.txt";
+    //public String stringUrl = "http://4gp.tw/ba3c/1429967297326.txt";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
