@@ -47,7 +47,7 @@ public class frag_first_floor extends Fragment {
             Intent resultActivity = new Intent(getActivity(), rating.class);
 
             //Launches the new activity
-            startActivity(resultActivity);
+            getActivity().startActivity(resultActivity);
         }
     }
 
