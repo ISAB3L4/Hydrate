@@ -15,7 +15,7 @@ class PagerAdapter extends FragmentPagerAdapter {
         // TODO Auto-generated method stub
         switch (arg0) {
             case 0:
-                return new frag_first_floor();
+                return new frag_basement_floor();
             case 1:
                 return new frag_first_floor();
             case 2:
