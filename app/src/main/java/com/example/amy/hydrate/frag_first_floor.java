@@ -40,6 +40,11 @@ public class frag_first_floor extends Fragment
         });
 
         return view;
+
+            //Launches the new activity
+            getActivity().startActivity(resultActivity);
+        }
+
     }
 
 }
