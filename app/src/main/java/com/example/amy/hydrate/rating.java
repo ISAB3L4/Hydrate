@@ -36,7 +36,7 @@ import com.dropbox.client2.exception.DropboxException;
 
 public class rating extends Activity {
 
-    private String bathroom_num;
+    private String bathroom_num="1_1";
     final static private String APP_KEY = "hbkk6y7g8dvvxc0";
     final static private String APP_SECRET = "8tn841whg7f578s";
     private DropboxAPI<AndroidAuthSession> mDBApi;
