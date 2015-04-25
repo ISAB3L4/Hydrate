@@ -14,7 +14,7 @@ public class frag_seventh_floor extends Fragment
 
     Button floor_7_1;
     Button floor_7_2;
-    Button floor_7_2;
+    Button floor_7_3;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
