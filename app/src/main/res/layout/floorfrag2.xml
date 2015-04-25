@@ -4,4 +4,12 @@
     android:layout_height="match_parent"
     android:background="#0000fd">
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/f_1_1"
+        android:clickable="true"
+        android:layout_gravity="center_horizontal|top"
+        android:src="@drawable/logo"/>
+
 </FrameLayout>
