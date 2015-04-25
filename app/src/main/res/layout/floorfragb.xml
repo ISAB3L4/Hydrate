@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/floorb">
+    android:background="@drawable/floorb"
+    android:screenOrientation="portrait">
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -15,8 +16,9 @@
         android:id="@+id/f_b_1"
         android:clickable="true"
         android:alpha="0"
-        android:layout_alignTop="@+id/f_b_2"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/f_b_2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="146dp" />
 
     <Button
         android:layout_width="50dp"
@@ -24,9 +26,9 @@
         android:id="@+id/f_b_2"
         android:clickable="true"
         android:alpha="0"
+        android:layout_marginTop="205dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/f_b_1"
-        android:layout_marginTop="176dp" />
+        android:layout_alignStart="@+id/f_b_1" />
 
     </RelativeLayout>
 
