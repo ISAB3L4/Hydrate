@@ -14,27 +14,21 @@
         android:layout_height="50dp"
         android:id="@+id/f_b_1"
         android:clickable="true"
-        android:alpha="0"
-        android:layout_above="@+id/f_b_3"
-        android:layout_centerHorizontal="true" />
+        android:alpha="0" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/f_b_2"
         android:clickable="true"
-        android:alpha="0"
-        android:layout_below="@+id/f_b_3"
-        android:layout_centerHorizontal="true" />
+        android:alpha="0" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/f_b_3"
         android:clickable="true"
-        android:alpha="0"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/f_b_1" />
+        android:alpha="0" />
 
     </RelativeLayout>
 
