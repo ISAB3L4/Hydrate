@@ -39,10 +39,10 @@
         android:gravity="center_horizontal"
         android:numStars="5"
         android:stepSize="1"
-        android:rating="3"
         android:progressTint="@android:color/holo_red_dark"
         android:clickable="true"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:rating="3" />
 
     <TextView android:text="@string/tag"
         android:layout_width="match_parent"

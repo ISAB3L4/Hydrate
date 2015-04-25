@@ -23,4 +23,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v13:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
+    compile files('libs/dropbox-android-sdk-1.6.3.jar')
+    compile files('libs/extra/android.jar')
+    compile files('libs/test/bcprov-jdk16-146.jar')
+    compile files('libs/test/commons-logging-1.1.1.jar')
+    compile files('libs/test/httpclient-4.0.3.jar')
+    compile files('libs/test/httpcore-4.0.1.jar')
+    compile files('libs/test/httpmime-4.0.3.jar')
+    compile files('libs/test/junit-4.10.jar')
 }
