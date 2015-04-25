@@ -35,7 +35,6 @@ public class frag_first_floor extends Fragment {
             floor_1_1.setOnClickListener(this);
 
         }
-
         @Override
 
         public void onClick(View v) {
