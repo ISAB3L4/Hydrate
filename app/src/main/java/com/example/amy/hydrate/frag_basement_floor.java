@@ -21,7 +21,7 @@ public class frag_basement_floor extends Fragment
         floor_b_1 = (Button) InputFragmentView.findViewById(R.id.f_b_1);
         floor_b_2 = (Button) InputFragmentView.findViewById(R.id.f_b_2);
         floor_b_3 = (Button) InputFragmentView.findViewById(R.id.f_b_3);
-
+        //dfdkfjdlkfj
         floor_b_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
