@@ -90,7 +90,7 @@ public class rating extends Activity {
                 btnSubmit.setText("No network connection available.");
             }
         }
-
+/**
     protected void onResume()
     {
         super.onResume();
@@ -103,7 +103,7 @@ public class rating extends Activity {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
         }
-    }
+    }*/
 
     private class DB_Download extends AsyncTask<String,Void,String>
     {
