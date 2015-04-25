@@ -2,15 +2,33 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:background="@drawable/floor1">
 
-    <ImageButton
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/f_1_1"
         android:clickable="true"
-        android:layout_gravity="center_horizontal|top"
-        android:src="@android:color/black"
         android:alpha="0"/>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/f_1_2"
+        android:clickable="true"
+        android:alpha="0" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/f_1_3"
+        android:clickable="true"
+        android:alpha="0" />
+
+    </RelativeLayout>
 
 </FrameLayout>
