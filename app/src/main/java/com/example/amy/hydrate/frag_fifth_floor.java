@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+
 
 public class frag_fifth_floor extends Fragment
 {
@@ -21,6 +21,8 @@ public class frag_fifth_floor extends Fragment
     {
         View InputFragmentView = inflater.inflate(R.layout.fragfloor5, container, false);
         floor_5_1 = (Button) InputFragmentView.findViewById(R.id.f_5_1);
+        floor_5_2 = (Button) InputFragmentView.findViewById(R.id.f_5_2);
+        floor_5_3 = (Button) InputFragmentView.findViewById(R.id.f_5_3);
 
         floor_5_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,10 +33,6 @@ public class frag_fifth_floor extends Fragment
             }
         });
 
-
-
-        floor_5_2 = (Button) InputFragmentView.findViewById(R.id.f_5_2);
-
         floor_5_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,9 +41,6 @@ public class frag_fifth_floor extends Fragment
 
             }
         });
-
-
-        floor_5_3 = (Button) InputFragmentView.findViewById(R.id.f_5_3);
 
         floor_5_3.setOnClickListener(new View.OnClickListener() {
             @Override

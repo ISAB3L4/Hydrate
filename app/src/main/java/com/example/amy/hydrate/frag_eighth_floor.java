@@ -20,6 +20,8 @@ public class frag_eighth_floor extends Fragment
     {
         View InputFragmentView = inflater.inflate(R.layout.fragfloor8, container, false);
         floor_8_1 = (Button) InputFragmentView.findViewById(R.id.f_8_1);
+        floor_8_2 = (Button) InputFragmentView.findViewById(R.id.f_8_2);
+        floor_8_3 = (Button) InputFragmentView.findViewById(R.id.f_8_3);
 
         floor_8_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,9 +32,6 @@ public class frag_eighth_floor extends Fragment
             }
         });
 
-
-        floor_8_2 = (Button) InputFragmentView.findViewById(R.id.f_8_2);
-
         floor_8_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,9 +41,6 @@ public class frag_eighth_floor extends Fragment
             }
         });
 
-
-        floor_8_3 = (Button) InputFragmentView.findViewById(R.id.f_8_3);
-
         floor_8_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,8 +49,6 @@ public class frag_eighth_floor extends Fragment
 
             }
         });
-
-
 
         return InputFragmentView;
     }
