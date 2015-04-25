@@ -4,38 +4,4 @@
     android:layout_height="match_parent"
     android:background="@drawable/tiny">
 
-
-    <ImageButton
-        android:layout_width="67dp"
-        android:layout_height="88dp"
-        android:id="@+id/f_1_1"
-        android:layout_gravity="left|center_vertical"
-        android:src="@drawable/bluemanandpinkwoman"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="94dp"
-        android:layout_marginTop="139dp"
-        android:clickable="true" />
-
-    <ImageButton
-        android:layout_width="67dp"
-        android:layout_height="88dp"
-        android:id="@+id/f_1_2"
-        android:src="@drawable/fulldrop"
-        android:layout_marginStart="45dp"
-        android:layout_alignTop="@+id/f_1_1"
-        android:layout_toEndOf="@+id/f_1_1"
-        android:clickable="true" />
-
-    <ImageButton
-        android:layout_width="67dp"
-        android:layout_height="88dp"
-        android:id="@+id/f_1_3"
-        android:src="@drawable/fulldrop"
-        android:layout_alignParentStart="true"
-        android:clickable="true"
-        android:layout_below="@+id/f_1_1"
-        android:layout_toStartOf="@+id/f_1_2" />
-
-
 </RelativeLayout>
