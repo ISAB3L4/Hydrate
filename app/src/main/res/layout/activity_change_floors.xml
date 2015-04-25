@@ -10,6 +10,7 @@
         android:layout_gravity="top"
         android:background="#000000"
         android:textColor="#fff"
+        android:textSize= "12pt"
         android:paddingTop="16dp"
         android:paddingBottom="16dp" />
 
