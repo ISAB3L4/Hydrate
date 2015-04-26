@@ -100,7 +100,6 @@ public class rating extends Activity {
      super.onResume();
      if (mDBApi!=null)
      {
-         btnSubmit.setText("It's there");
          if(mDBApi.getSession().authenticationSuccessful())
          {
              btnSubmit.setText("It works");
@@ -133,9 +132,9 @@ public class rating extends Activity {
                 DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, outputStream, null);
                 Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
             } catch (DropboxException e) {
-                //btnSubmit.setText("File download unsuccessful.");
+                btnSubmit.setText("File download unsuccessful.");
             } catch (FileNotFoundException e) {
-                //btnSubmit.setText("File not found.");
+                btnSubmit.setText("File not found.");
             }
             //Convert OutputStream to String
             try {
