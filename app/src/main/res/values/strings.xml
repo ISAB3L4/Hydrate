@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hydrate</string>
+    <string name="app_name">HydRate</string>
     <string name="team_name">Team Hydrate</string>
     <string name="details"> 2015 \n Creators:
         \n Purity Dele-Oni \t Isabela Haghighi
@@ -21,6 +21,8 @@
     <string name="f8">Floor 8</string>
     <string name="f9">Floor 9</string>
 
+<!-- This is for letting the rating class know which button has been pressed-->
+    <string name="bathroom_selected">0_0</string>
 
     <string name="shitty">Shitty</string>
     <string name="porcelain">Porcelain Potty</string>
