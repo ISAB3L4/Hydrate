@@ -38,8 +38,8 @@ import com.dropbox.client2.session.AppKeyPair;
 public class rating extends Activity {
 
     private String bathroom_num="0_0";
-    final static private String APP_KEY = "hbkk6y7g8dvvxc0";
-    final static private String APP_SECRET = "8tn841whg7f578s";
+    final static private String APP_KEY = "cxepcok6btcf0vh";
+    final static private String APP_SECRET = "vh398xojy7flrbk";
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     private RatingBar ratingBar;
