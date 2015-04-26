@@ -95,10 +95,10 @@ public class rating extends Activity {
         super.onPause();
     }
 
-     protected void onRestart()
+     protected void onResume()
      {
-     super.onRestart();
-     if (mDBApi.getSession().authenticationSuccessful()) {
+     super.onResume();
+     if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
      mDBApi.getSession().finishAuthentication();
