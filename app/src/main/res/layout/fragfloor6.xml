@@ -9,34 +9,36 @@
 
 
         <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
             android:id="@+id/f_6_1"
             android:clickable="true"
             android:alpha="0"
+            android:layout_marginBottom="11dp"
             android:layout_above="@+id/f_6_2"
-            android:layout_alignStart="@+id/f_6_3" />
+            android:layout_alignEnd="@+id/f_6_2"
+            android:layout_marginEnd="10dp" />
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="25dp"
             android:layout_height="50dp"
             android:id="@+id/f_6_2"
             android:clickable="true"
             android:alpha="0"
-            android:layout_alignStart="@+id/f_6_3"
-            android:layout_marginStart="44dp"
-            android:layout_alignTop="@+id/f_6_3" />
+            android:layout_marginStart="23dp"
+            android:layout_alignTop="@+id/f_6_3"
+            android:layout_alignStart="@+id/f_6_3" />
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="25dp"
             android:layout_height="50dp"
             android:id="@+id/f_6_3"
             android:clickable="true"
             android:alpha="0"
-            android:layout_marginBottom="149dp"
+            android:layout_marginBottom="148dp"
+            android:layout_marginEnd="133dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="123dp" />
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
