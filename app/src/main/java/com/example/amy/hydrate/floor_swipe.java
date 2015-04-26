@@ -16,4 +16,10 @@ public class floor_swipe extends FragmentActivity {
 
 
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
 }
