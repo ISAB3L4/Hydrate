@@ -32,6 +32,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.android.AuthActivity;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 
@@ -42,10 +43,10 @@ public class rating extends Activity {
     final static private String APP_SECRET = "vh398xojy7flrbk";
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private String accessToken;
-
     private RatingBar ratingBar;
     private Button btnSubmit;
     private AppKeyPair appKeys;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,13 +102,7 @@ public class rating extends Activity {
      protected void onResume()
      {
      super.onResume();
-     if (mDBApi!=null)
-     {
-         if(mDBApi.getSession().authenticationSuccessful())
-         {
-             btnSubmit.setText("It works");
-         }
-     }
+
      if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
