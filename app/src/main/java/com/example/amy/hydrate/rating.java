@@ -104,6 +104,7 @@ public class rating extends Activity {
      mDBApi.getSession().finishAuthentication();
      String accessToken = mDBApi.getSession().getOAuth2AccessToken();
      new DB_Download().execute(bathroom_num);
+     btnSubmit.setText("Sending data...");
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
      }
