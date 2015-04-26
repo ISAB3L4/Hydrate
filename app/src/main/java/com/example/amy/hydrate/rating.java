@@ -98,7 +98,8 @@ public class rating extends Activity {
      protected void onResume()
      {
      super.onResume();
-     if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
+         btnSubmit.setText("Started from the bottom...");
+     if (mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
      mDBApi.getSession().finishAuthentication();
