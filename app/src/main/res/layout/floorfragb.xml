@@ -10,25 +10,33 @@
 
 
     <Button
-        android:layout_width="50dp"
+        android:layout_width="35dp"
         android:layout_height="50dp"
         android:id="@+id/f_b_1"
         android:clickable="true"
-        android:alpha="0" />
+        android:alpha="0"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/f_b_2" />
 
     <Button
-        android:layout_width="50dp"
+        android:layout_width="25dp"
         android:layout_height="50dp"
         android:id="@+id/f_b_2"
         android:clickable="true"
-        android:alpha="0" />
+        android:alpha="0"
+        android:layout_marginBottom="25dp"
+        android:layout_alignBottom="@+id/f_b_1"
+        android:layout_alignStart="@+id/f_b_3" />
 
     <Button
-        android:layout_width="50dp"
+        android:layout_width="25dp"
         android:layout_height="50dp"
         android:id="@+id/f_b_3"
         android:clickable="true"
-        android:alpha="0" />
+        android:alpha="0"
+        android:layout_alignTop="@+id/f_b_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
 
     </RelativeLayout>
 

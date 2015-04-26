@@ -13,21 +13,30 @@
             android:layout_height="50dp"
             android:id="@+id/f_2_1"
             android:clickable="true"
-            android:alpha="0" />
+            android:alpha="0"
+            android:layout_marginBottom="66dp"
+            android:layout_above="@+id/f_2_2"
+            android:layout_alignStart="@+id/f_2_2"
+            android:layout_marginStart="11dp" />
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="25dp"
             android:layout_height="50dp"
             android:id="@+id/f_2_2"
             android:clickable="true"
-            android:alpha="0" />
+            android:alpha="0"
+            android:layout_marginBottom="134dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/f_2_3" />
 
         <Button
-            android:layout_width="50dp"
+            android:layout_width="25dp"
             android:layout_height="50dp"
             android:id="@+id/f_2_3"
             android:clickable="true"
-            android:alpha="0" />
+            android:alpha="0"
+            android:layout_alignTop="@+id/f_2_2"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
