@@ -41,9 +41,11 @@ public class rating extends Activity {
     final static private String APP_KEY = "cxepcok6btcf0vh";
     final static private String APP_SECRET = "vh398xojy7flrbk";
     private DropboxAPI<AndroidAuthSession> mDBApi;
+    private String accessToken;
 
     private RatingBar ratingBar;
     private Button btnSubmit;
+    private AppKeyPair appKeys;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,8 @@ public class rating extends Activity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected())
         {
-            AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+
+            appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
             AndroidAuthSession session = new AndroidAuthSession(appKeys);
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
@@ -109,8 +112,8 @@ public class rating extends Activity {
      try {
      // Required to complete auth, sets the access token on the session
      mDBApi.getSession().finishAuthentication();
-     String accessToken = mDBApi.getSession().getOAuth2AccessToken();
-     new DB_Download().execute(bathroom_num);
+         accessToken = mDBApi.getSession().getOAuth2AccessToken();
+         new DB_Download().execute(bathroom_num);
      btnSubmit.setText("Sending data...");
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
