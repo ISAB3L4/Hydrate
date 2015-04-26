@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.session.AppKeyPair;
 
 public class rating extends Activity {
 
@@ -42,9 +43,7 @@ public class rating extends Activity {
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     private RatingBar ratingBar;
-    //private TextView txtRatingValue;
     private Button btnSubmit;
-    //public String stringUrl = "http://4gp.tw/ba3c/1429967297326.txt";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,53 +56,61 @@ public class rating extends Activity {
         btnSubmit=(Button) findViewById(R.id.submit_rating);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 myClickHandler();
             }
         });
     }
-
     private void addListenerOnRatingBar() {
         ratingBar=(RatingBar) findViewById(R.id.ratingBar);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b)
-                {
-                   //Do nothing until the user clicks submit
-                }
+            {
+                //Do nothing until the user clicks submit
+            }
         });
     }
+    // When user clicks button, calls AsyncTask.
+    // Before attempting to fetch the URL, makes sure that there is a network connection.
+    public void myClickHandler() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+        {
+            AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+            AndroidAuthSession session = new AndroidAuthSession(appKeys);
+            mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            mDBApi.getSession().startOAuth2Authentication(rating.this);
+            btnSubmit.setText("Done");
 
-
-        // When user clicks button, calls AsyncTask.
-        // Before attempting to fetch the URL, makes sure that there is a network connection.
-        public void myClickHandler() {
-            ConnectivityManager connMgr = (ConnectivityManager)
-                    getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected())
-            {
-                mDBApi.getSession().startOAuth2Authentication(rating.this);
-                onResume();
-                new DB_Download().execute(bathroom_num);
-            } else {
-                btnSubmit.setText("No network connection available.");
-            }
+        } else {
+            btnSubmit.setText("No network connection available.");
         }
-/**
-    protected void onResume()
+    }
+
+    protected void onPause()
     {
-        super.onResume();
-        if (mDBApi.getSession().authenticationSuccessful()) {
-            try {
-                // Required to complete auth, sets the access token on the session
-                mDBApi.getSession().finishAuthentication();
-                String accessToken = mDBApi.getSession().getOAuth2AccessToken();
-            } catch (IllegalStateException e) {
-                Log.i("DbAuthLog", "Error authenticating", e);
-            }
-        }
-    }*/
+        super.onPause();
+    }
+    /**
+     *
+     protected void onResume()
+     {
+     super.onResume();
+     if (mDBApi.getSession().authenticationSuccessful()) {
+     try {
+     // Required to complete auth, sets the access token on the session
+     mDBApi.getSession().finishAuthentication();
+     String accessToken = mDBApi.getSession().getOAuth2AccessToken();
+     new DB_Download().execute(bathroom_num);
+     } catch (IllegalStateException e) {
+     Log.i("DbAuthLog", "Error authenticating", e);
+     }
+     }
+     }*/
 
     private class DB_Download extends AsyncTask<String,Void,String>
     {
@@ -119,9 +126,9 @@ public class rating extends Activity {
                 DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, outputStream, null);
                 Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
             } catch (DropboxException e) {
-                btnSubmit.setText("File download unsuccessful.");
+                //btnSubmit.setText("File download unsuccessful.");
             } catch (FileNotFoundException e) {
-                btnSubmit.setText("File not found.");
+                //btnSubmit.setText("File not found.");
             }
             //Convert OutputStream to String
             try {
@@ -138,7 +145,6 @@ public class rating extends Activity {
             return aString;
         }
     }
-
 
     private String Add_Calculate_New_Rating(String myRating) {
         //Basically, we will add the new rating to the string
@@ -170,91 +176,14 @@ public class rating extends Activity {
                         file.length(), null, null);
                 Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
             } catch (DropboxException e) {
-                btnSubmit.setText("File download unsuccessful.");
+                //btnSubmit.setText("File download unsuccessful.");
             } catch (FileNotFoundException e) {
-                btnSubmit.setText("File not found.");
+                //btnSubmit.setText("File not found.");
             }
             return "SUCCESS!";
         }
     }
-
-/**
-        // Uses AsyncTask to create a task away from the main UI thread. This task takes a
-        // URL string and uses it to create an HttpUrlConnection. Once the connection
-        // has been established, the AsyncTask downloads the contents of the webpage as
-        // an InputStream. Finally, the InputStream is converted into a string, which is
-        // displayed in the UI by the AsyncTask's onPostExecute method.
-        private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
-            @Override
-            protected String doInBackground(String... urls) {
-
-                // params comes from the execute() call: params[0] is the url.
-                try {
-                    downloadUrl(urls[0]);
-                    return "Download success!";
-                } catch (IOException e) {
-                    return "Unable to retrieve web page. URL may be invalid.";
-                }
-            }
-
-            // onPostExecute displays the results of the AsyncTask.
-            @Override
-            protected void onPostExecute(String result) {
-
-                //textView.setText(result);
-            }
-        }
-
-        // Reads an InputStream and converts it to a String.
-        public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-            Reader reader = null;
-            reader = new InputStreamReader(stream, "UTF-8");
-            char[] buffer = new char[len];
-            reader.read(buffer);
-            return new String(buffer);
-        }
-
-        // Given a URL, establishes an HttpUrlConnection and retrieves
-        // the web page content as a InputStream, which it returns as
-        // a string.
-        private void downloadUrl(String myurl) throws IOException {
-            InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
-            int len = 500;
-
-            try {
-                URL url = new URL(myurl);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds );
-                conn.setConnectTimeout(15000 /* milliseconds );
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-                // Starts the query
-                conn.connect();
-                is = conn.getInputStream();
-
-                // Convert the InputStream into a string
-                String contentAsString = readIt(is, len);
-                //Assuming that the number gotten from from the InputStream is valid
-                //Convert String to ArrayList
-                List<String> myList = new ArrayList<String>(Arrays.asList(contentAsString.split(" ")));
-                //Add the new rating to the list
-                myList.add(String.valueOf(ratingBar.getNumStars()));
-                Calculate_New_Rating(myList);
-                //Also, append the new data to the existing string for re-upload
-                contentAsString.concat(" ".concat(String.valueOf(ratingBar.getNumStars())));
-                writeToFile(contentAsString);
-                // Makes sure that the InputStream is closed after the app is
-                // finished using it.
-            } finally {
-                if (is != null) {
-                    is.close();
-                }
-            }
-        }
-*/
-  @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_rating, menu);
@@ -271,8 +200,6 @@ public class rating extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.submit_rating) {
-            myClickHandler();
         }
         return super.onOptionsItemSelected(item);
     }
