@@ -31,7 +31,7 @@
             android:layout_alignStart="@+id/f_8_3" />
 
         <Button
-            android:layout_width="23dp"
+            android:layout_width="25dp"
             android:layout_height="45dp"
             android:id="@+id/f_8_3"
             android:clickable="true"
