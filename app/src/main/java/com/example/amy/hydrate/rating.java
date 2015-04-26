@@ -37,7 +37,7 @@ import com.dropbox.client2.session.AppKeyPair;
 
 public class rating extends Activity {
 
-    private String bathroom_num="1_1";
+    private String bathroom_num="0_0";
     final static private String APP_KEY = "hbkk6y7g8dvvxc0";
     final static private String APP_SECRET = "8tn841whg7f578s";
     private DropboxAPI<AndroidAuthSession> mDBApi;
@@ -84,7 +84,7 @@ public class rating extends Activity {
             AndroidAuthSession session = new AndroidAuthSession(appKeys);
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
-            btnSubmit.setText("Done");
+            btnSubmit.setText("Network is connected.");
 
         } else {
             btnSubmit.setText("No network connection available.");
@@ -95,11 +95,10 @@ public class rating extends Activity {
     {
         super.onPause();
     }
-    /**
-     *
-     protected void onResume()
+
+     protected void onRestart()
      {
-     super.onResume();
+     super.onRestart();
      if (mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
@@ -110,7 +109,7 @@ public class rating extends Activity {
      Log.i("DbAuthLog", "Error authenticating", e);
      }
      }
-     }*/
+     }
 
     private class DB_Download extends AsyncTask<String,Void,String>
     {
