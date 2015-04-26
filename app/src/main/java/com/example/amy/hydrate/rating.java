@@ -75,7 +75,7 @@ public class rating extends Activity {
             }
         });
     }
-    // When user clicks button, calls AsyncTask.
+    // When user clicks button, calls AsyncTask in DB_Download.
     // Before attempting to fetch the URL, makes sure that there is a network connection.
     public void myClickHandler() {
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -83,12 +83,12 @@ public class rating extends Activity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected())
         {
-
             appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
             AndroidAuthSession session = new AndroidAuthSession(appKeys);
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
-
+            if ( mDBApi.getSession().authenticationSuccessful())
+                btnSubmit.setText("True");
         } else {
             btnSubmit.setText("No network connection available.");
         }
