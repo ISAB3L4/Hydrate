@@ -1,6 +1,7 @@
 package com.example.amy.hydrate;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -46,7 +47,7 @@ public class rating extends Activity {
     private RatingBar ratingBar;
     private Button btnSubmit;
     private AppKeyPair appKeys;
-
+    private AndroidAuthSession session;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +84,23 @@ public class rating extends Activity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected())
         {
+
             appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-            AndroidAuthSession session = new AndroidAuthSession(appKeys);
+
+            SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
+            String token = prefs.getString(APP_KEY, null);
+
+            if (token != null) {
+                session = new AndroidAuthSession(appKeys, token);
+                mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            } else {
+                session = new AndroidAuthSession(appKeys);
+                mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            }
+
+
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
-            if ( mDBApi.getSession().authenticationSuccessful())
-                btnSubmit.setText("True");
         } else {
             btnSubmit.setText("No network connection available.");
         }
@@ -102,13 +114,17 @@ public class rating extends Activity {
      protected void onResume()
      {
      super.onResume();
-
      if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
      mDBApi.getSession().finishAuthentication();
          accessToken = mDBApi.getSession().getOAuth2AccessToken();
-         new DB_Download().execute(bathroom_num);
+         // Store it locally in our app for later use
+         SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
+         SharedPreferences.Editor editor = prefs.edit();
+         editor.putString(APP_KEY, accessToken);
+         editor.commit();
+         //new DB_Download().execute(bathroom_num);
      btnSubmit.setText("Sending data...");
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
