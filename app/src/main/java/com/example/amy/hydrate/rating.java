@@ -84,7 +84,6 @@ public class rating extends Activity {
             AndroidAuthSession session = new AndroidAuthSession(appKeys);
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
-            btnSubmit.setText("Network is connected.");
 
         } else {
             btnSubmit.setText("No network connection available.");
