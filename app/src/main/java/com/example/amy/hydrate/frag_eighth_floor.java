@@ -7,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-
-import static com.example.amy.hydrate.R.id.bathroom_num;
 
 public class frag_eighth_floor extends Fragment
 {
@@ -17,7 +14,6 @@ public class frag_eighth_floor extends Fragment
     Button floor_8_1;
     Button floor_8_2;
     Button floor_8_3;
-    TextView bathroom_text;
 
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -26,14 +22,13 @@ public class frag_eighth_floor extends Fragment
         floor_8_1 = (Button) InputFragmentView.findViewById(R.id.f_8_1);
         floor_8_2 = (Button) InputFragmentView.findViewById(R.id.f_8_2);
         floor_8_3 = (Button) InputFragmentView.findViewById(R.id.f_8_3);
-        bathroom_text=(TextView) InputFragmentView.findViewById(bathroom_num);
 
         floor_8_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"8_1");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("8_1");
             }
         });
 
@@ -41,8 +36,8 @@ public class frag_eighth_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"8_2");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("8_2");
 
             }
         });
@@ -51,8 +46,8 @@ public class frag_eighth_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"8_3");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("8_3");
             }
         });
 

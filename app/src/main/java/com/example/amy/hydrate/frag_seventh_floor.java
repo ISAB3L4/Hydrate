@@ -25,6 +25,7 @@ public class frag_seventh_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"7_1");
                 getActivity().startActivity(resultActivity);
 
             }
@@ -36,6 +37,7 @@ public class frag_seventh_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"7_2");
                 getActivity().startActivity(resultActivity);
 
             }
@@ -47,6 +49,7 @@ public class frag_seventh_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(frag_basement_floor.bathroom_text,"7_3");
                 getActivity().startActivity(resultActivity);
 
             }

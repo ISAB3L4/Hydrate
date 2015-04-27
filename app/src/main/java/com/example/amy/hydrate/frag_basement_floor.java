@@ -3,6 +3,7 @@ package com.example.amy.hydrate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ public class frag_basement_floor extends Fragment
     Button floor_b_1;
     Button floor_b_2;
     Button floor_b_3;
-    TextView bathroom_text;
+    public static final String bathroom_text="0";
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -24,14 +25,14 @@ public class frag_basement_floor extends Fragment
         floor_b_1 = (Button) InputFragmentView.findViewById(f_b_1);
         floor_b_2 = (Button) InputFragmentView.findViewById(f_b_2);
         floor_b_3 = (Button) InputFragmentView.findViewById(f_b_3);
-        bathroom_text=(TextView) InputFragmentView.findViewById(bathroom_num);
+
 
         floor_b_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(bathroom_text,"b_1");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("b_1");
             }
         });
 
@@ -39,8 +40,8 @@ public class frag_basement_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(bathroom_text,"b_2");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("b_2");;
             }
         });
 
@@ -48,8 +49,8 @@ public class frag_basement_floor extends Fragment
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                resultActivity.putExtra(bathroom_text,"b_3");
                 getActivity().startActivity(resultActivity);
-                bathroom_text.setText("b_3");
 
             }
         });

@@ -19,6 +19,8 @@ import java.io.UnsupportedEncodingException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
+
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
@@ -26,7 +28,7 @@ import com.dropbox.client2.session.AppKeyPair;
 
 public class rating extends Activity {
 
-    private String bathroom_num="0_0";
+    String value;
     final static private String APP_KEY = "cxepcok6btcf0vh";
     final static private String APP_SECRET = "vh398xojy7flrbk";
     private DropboxAPI<AndroidAuthSession> mDBApi;
@@ -42,6 +44,7 @@ public class rating extends Activity {
         setContentView(R.layout.activity_rating);
         addListenerOnRatingBar();
         addListenerOnButton();
+        value=getIntent().getExtras().getString(frag_basement_floor.bathroom_text);
     }
 
     private void addListenerOnButton() {
@@ -111,7 +114,7 @@ public class rating extends Activity {
          SharedPreferences.Editor editor = prefs.edit();
          editor.putString(APP_KEY, accessToken);
          editor.commit();
-         new DB_Download().execute(bathroom_num);
+         new DB_Download().execute(value);
         btnSubmit.setText("Sending data...");
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
@@ -124,7 +127,7 @@ public class rating extends Activity {
 
         @Override
         protected String doInBackground(String... bathroom) {
-            String title = "/".concat(String.valueOf(bathroom)).concat(".txt");
+            String title = "/".concat(value).concat(".txt");
             File file = new File(title);
             String aString = null;
             FileOutputStream outputStream = null;
@@ -166,14 +169,14 @@ public class rating extends Activity {
         }
         ratingBar.setNumStars(result/myRating.length());
         //Call the upload function
-        new DB_Upload().execute(bathroom_num);
+        new DB_Upload().execute(value);
         return myRating;
     }
     private class DB_Upload extends AsyncTask<String,Void,String> {
 
         @Override
         protected String doInBackground(String... bathroom) {
-            String title = "/".concat(String.valueOf(bathroom)).concat(".txt");
+            String title = "/".concat(value).concat(".txt");
             File file = new File(title);
             String aString = null;
             FileInputStream inputStream = null;
