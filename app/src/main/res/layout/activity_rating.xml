@@ -12,17 +12,17 @@
     android:background="@android:color/white"
     android:clickable="false">
 
-<!--make this switch between a few differnet comments-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--make this switch between a few different comments-->
 
-        <TextSwitcher
-            android:layout_width="match_parent"
-            android:layout_height="185dp"/>
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/bathroom_text"
+                android:id="@+id/bathroom_num" />
 
-        
+
+
     <TextView android:text="@string/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -35,6 +35,7 @@ public class rating extends Activity {
     private Button btnSubmit;
     private AppKeyPair appKeys;
     private AndroidAuthSession session;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,7 @@ public class rating extends Activity {
     }
     // When user clicks button, calls AsyncTask in DB_Download.
     // Before attempting to fetch the URL, makes sure that there is a network connection.
+    //This
     public void myClickHandler() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -73,7 +75,6 @@ public class rating extends Activity {
         {
 
             appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-
             SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
             String token = prefs.getString(APP_KEY, null);
 
