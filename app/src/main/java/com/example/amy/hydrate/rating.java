@@ -15,25 +15,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.android.AuthActivity;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 
@@ -98,8 +85,7 @@ public class rating extends Activity {
                 mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             }
 
-
-            mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            //mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(rating.this);
         } else {
             btnSubmit.setText("No network connection available.");
@@ -124,8 +110,8 @@ public class rating extends Activity {
          SharedPreferences.Editor editor = prefs.edit();
          editor.putString(APP_KEY, accessToken);
          editor.commit();
-         //new DB_Download().execute(bathroom_num);
-     btnSubmit.setText("Sending data...");
+         new DB_Download().execute(bathroom_num);
+        btnSubmit.setText("Sending data...");
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
      }

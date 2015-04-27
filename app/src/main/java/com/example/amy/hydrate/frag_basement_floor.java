@@ -10,10 +10,11 @@ import android.widget.Button;
 
 public class frag_basement_floor extends Fragment
 {
-
+    Button bathroom_selected;
     Button floor_b_1;
     Button floor_b_2;
     Button floor_b_3;
+
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -21,13 +22,12 @@ public class frag_basement_floor extends Fragment
         floor_b_1 = (Button) InputFragmentView.findViewById(R.id.f_b_1);
         floor_b_2 = (Button) InputFragmentView.findViewById(R.id.f_b_2);
         floor_b_3 = (Button) InputFragmentView.findViewById(R.id.f_b_3);
-        //dfdkfjdlkfj
         floor_b_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
                 getActivity().startActivity(resultActivity);
-
+                //bathroom_selected = (Button) findViewById(R.string.bathroom_selected);
             }
         });
 
