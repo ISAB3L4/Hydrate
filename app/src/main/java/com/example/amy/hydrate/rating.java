@@ -15,12 +15,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
-import android.widget.TextView;
-
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
@@ -95,12 +94,13 @@ public class rating extends Activity {
             btnSubmit.setText("No network connection available.");
         }
     }
-
+    @Override
     protected void onPause()
     {
         super.onPause();
     }
 
+    @Override
      protected void onResume()
      {
      super.onResume();
@@ -126,19 +126,21 @@ public class rating extends Activity {
     {
 
         @Override
-        protected String doInBackground(String... bathroom) {
+        protected String doInBackground(String... params) {
             String title = "/".concat(value).concat(".txt");
+            btnSubmit.setText(title);
             File file = new File(title);
             String aString = null;
             FileOutputStream outputStream = null;
             try {
-                outputStream = new FileOutputStream(file);
+                outputStream = new FileOutputStream(file);//, Context.MODE_PRIVATE);
                 DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, outputStream, null);
                 Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+                btnSubmit.setText("Download successful");
             } catch (DropboxException e) {
                 btnSubmit.setText("File download unsuccessful.");
             } catch (FileNotFoundException e) {
-                btnSubmit.setText("File not found.");
+                //btnSubmit.setText("File not found.");
             }
             //Convert OutputStream to String
             try {
@@ -146,7 +148,7 @@ public class rating extends Activity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Add_Calculate_New_Rating(aString);
+            //Add_Calculate_New_Rating(aString);
             return aString;
         }
         protected String Convert_to_String(FileOutputStream outputStream) throws UnsupportedEncodingException {
@@ -169,7 +171,7 @@ public class rating extends Activity {
         }
         ratingBar.setNumStars(result/myRating.length());
         //Call the upload function
-        new DB_Upload().execute(value);
+       //new DB_Upload().execute(value);
         return myRating;
     }
     private class DB_Upload extends AsyncTask<String,Void,String> {
