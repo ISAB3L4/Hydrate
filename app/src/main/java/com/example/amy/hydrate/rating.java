@@ -61,6 +61,7 @@ public class rating extends Activity {
         setContentView(R.layout.activity_rating);
         addListenerOnRatingBar();
         addListenerOnButton();
+        mDBApi=loading_page.mDBApi;
 
         //This value here tells the rating class which bathroom has been clicked from the floor
         //Note that the variable bathroom_text is public, so every .java file that has a button
@@ -75,6 +76,15 @@ public class rating extends Activity {
         wifi_result=(TextView) findViewById(R.id.wifi_result);
         poop_result=(TextView) findViewById(R.id.smell_result);
         toilet_result=(TextView) findViewById(R.id.paper_result);
+        //If it's a water fountain, we don't need the toilet paper tag
+        if (value.contains("_1"))
+        {
+            toilet.setVisibility(View.INVISIBLE);
+            toilet_result.setVisibility(View.INVISIBLE);
+        }
+
+        //Call the Download_DB class and execute it to populate data
+        new DB_Download().execute(value);
 
         //NOTE: The Dropbox .txt files are in the format:
         /**
@@ -90,7 +100,8 @@ public class rating extends Activity {
             @Override
             public void onClick(View view)
             {
-                myClickHandler();
+                //myClickHandler();
+                new DB_Download().execute(value);
             }
         });
     }
@@ -105,11 +116,13 @@ public class rating extends Activity {
             }
         });
     }
+
+    /**
     // When user clicks button, calls AsyncTask in DB_Download.
     // Before attempting to fetch the URL, makes sure that there is a network connection.
     //This
     public void myClickHandler() {
-        //This batch of code is directly from Andriod Stuido's tutorial. It's just checking to make
+        //This batch of code is directly from Android Studio's tutorial. It's just checking to make
         //sure that there is a network connection
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -136,7 +149,7 @@ public class rating extends Activity {
         } else {
             btnSubmit.setText("No network connection available.");
         }
-    }
+    }*/
     @Override
     protected void onPause()
     {
@@ -147,6 +160,7 @@ public class rating extends Activity {
      protected void onResume()
      {
      super.onResume();
+     /**
          //This is directly from DropBox's tutorial.
      if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
      try {
@@ -164,11 +178,14 @@ public class rating extends Activity {
 
          //For debugging purposes
          btnSubmit.setText("Done");
+         //wait(2000);
+         //btnSubmit.setText("Submit my Rating!");
 
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
      }
      }
+      */
      }
 
     private class DB_Download extends AsyncTask<String,Void,String> {
@@ -215,7 +232,6 @@ public class rating extends Activity {
             //NOTE: The Dropbox .txt files are in the format:
             /**
              Cumulative Rating (Space) # of Ratings (Space) Wi-Fi (Space) Smelly (Space) Toilet Paper
-             This will be useful later
              */
             String[] string_array=aString.split(" ");
 
@@ -289,7 +305,7 @@ public class rating extends Activity {
                     //Open the file one more time, for upload
                     FileInputStream fis1 = openFileInput(title);
 
-                    //PUSH TO DROPBOX
+                    //PUSH TO DROPBOX, overwriting the old file there
                     DropboxAPI.Entry response = mDBApi.putFileOverwrite(title, fis1, (int) fis1.getChannel().size()
                             , null);
                     //Not necessary
