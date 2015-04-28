@@ -15,9 +15,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Scanner;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -152,7 +155,7 @@ public class rating extends Activity {
             String title = (value).concat(".txt");
 
             //Create the input string that will hold the data from the downloaded file
-            String aString=null;
+            String aString="";
 
             //Create new file
             try {
@@ -160,15 +163,18 @@ public class rating extends Activity {
 
                     //GET FILE FROM DROPBOX HERE
                     DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
-
+                    fos.close();
                     //Not really necessary
                     //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
 
-                    aString = Convert_to_String(fos);
-                    final String finalAString = aString;
-                    runOnUiThread(new Runnable() {
-                        public void run() {btnSubmit.setText(finalAString); }
-                    });
+                    //Read from new file
+                    FileInputStream file=openFileInput(title);
+                    byte[] buffer = new byte[10];
+                    file.read(buffer, 0, 10);
+                    file.close();
+                    aString=new String(buffer);
+                    //aString = Convert_to_String(fos);
+
 
                 } catch (DropboxException e) {
                     //btnSubmit.setText("File download unsuccessful.");
@@ -179,15 +185,12 @@ public class rating extends Activity {
                 }
                 catch (UnsupportedEncodingException e) {
                    e.printStackTrace();
-    }
+                }
+                catch (IOException e) {
+                 e.printStackTrace();
+                }
             Add_Calculate_New_Rating(aString);
             return aString;
-}
-        protected String Convert_to_String(FileOutputStream outputStream) throws UnsupportedEncodingException {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            String aString = new String(os.toByteArray(),"UTF-8");
-            return aString;
-        }
     }
 
     private String Add_Calculate_New_Rating(String myRating) {
