@@ -179,6 +179,7 @@ public class rating extends Activity {
                 byte[] buffer = new byte[((int) file.getChannel().size())];
                 file.read(buffer,0, (int) file.getChannel().size());
                 file.close();
+                //Assign the data to the string we will edit later
                 aString = new String(buffer);
 
             } catch (DropboxException e) {
