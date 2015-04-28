@@ -46,15 +46,9 @@
 
     <string name="info">Legend</string>
 
-    <string-array name="tags">
-        <item>Pee in the dark</item>
-        <item>Need to dry Hands? \n Use your Jeans!</item>
-        <item> No Soap</item>
-        <item> Can\'t even breathe!</item>
-        <item> Bring your own toilet paper</item>
-    </string-array>
-    <string name="title_activity_bumap">bumap</string>
+    <string name="wifi">Wifi available?</string>
+    <string name="smell">Does is it smell bad?</string>
+    <string name="paper">Is there toilet paper?</string>
 
-    <string name="hello_world">Hello world!</string>
 
 </resources>
