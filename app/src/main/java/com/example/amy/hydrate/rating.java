@@ -10,17 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Context;
-import java.io.ByteArrayOutputStream;
+
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -28,6 +30,7 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
+import static java.lang.Float.floatToIntBits;
 
 public class rating extends Activity {
 
@@ -39,6 +42,7 @@ public class rating extends Activity {
     private AndroidAuthSession session;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private String accessToken;
+    private int user_rating;
 
     //We also need the IDs of both the rating and the submit button
     private RatingBar ratingBar;
@@ -139,7 +143,7 @@ public class rating extends Activity {
          new DB_Download().execute(value);
 
          //For debugging purposes
-         btnSubmit.setText("Sending data...");
+         btnSubmit.setText("Done");
 
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
@@ -152,10 +156,8 @@ public class rating extends Activity {
         protected String doInBackground(String... params) {
             //Create file name
             String title = (value).concat(".txt");
-
             //Create the input string that will hold the data from the downloaded file
             String aString = "";
-
             //Create new file
             try {
                 FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
@@ -166,12 +168,28 @@ public class rating extends Activity {
                 //Not really necessary
                 //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
 
+                /**
+                FileWriter new_file=new FileWriter(title);
+                BufferedWriter bw = new BufferedWriter(new_file);
+                bw.write((int)ratingBar.getRating());
+                bw.close();*/
+
                 //Read from new file
                 FileInputStream file = openFileInput(title);
-                byte[] buffer = new byte[10];
-                file.read(buffer, 0, 10);
+                byte[] buffer = new byte[((int) file.getChannel().size())];
+                file.read(buffer,0, (int) file.getChannel().size());
                 file.close();
+
+                //buffer[(int) file.getChannel().size()] = float2ByteArray(ratingBar.getRating())[1];
+
                 aString = new String(buffer);
+                final String finalAString1 = aString;
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        btnSubmit.setText(finalAString1);
+                    }
+                });
+                file.close();
 
             } catch (DropboxException e) {
                 //btnSubmit.setText("File download unsuccessful.");
@@ -182,31 +200,34 @@ public class rating extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Add_Calculate_New_Rating(aString);
-            return aString;
-        }
+            //Then, we need to calculate the new average
+            int rating=(int)ratingBar.getRating();
+            String[] string_array=aString.split(" ");
+            rating+=Integer.parseInt(string_array[0]);
+            final int counter=Integer.parseInt(string_array[1])+1;
+            final int finalResult = rating;
 
-        private String Add_Calculate_New_Rating(String myRating) {
-            //Basically, we will add the new rating to the string
-            //then convert all of the ratings to integers
-            //then average them for the new rating
-            myRating.concat(Integer.toString(ratingBar.getNumStars()));
-
-            int result = 0;
-            for (int i = 0; i < myRating.length(); i++) {
-                try {
-
-                    result += (int) (myRating.charAt(i)) - 48; //ASCII value of 0 is 48
-
-                } catch (NumberFormatException nfe) {
+            //I'm running this part on the UI Thread because you can't touch the viewing components
+            //directly from this download thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    ratingBar.setRating(finalResult /counter);
                 }
-                ;
-            }
-            //ratingBar.setNumStars(result/myRating.length());
-            //Call the upload function
-            new DB_Upload().execute(value);
+            });
 
-            return myRating;
+            try {
+                FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
+                fos.write(Integer.toString(rating).getBytes());
+                fos.write(" ".getBytes());
+                fos.write(Integer.toString(counter).getBytes());
+                fos.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            new DB_Upload().execute(value);
+            return "Success!";
         }
     }
 
@@ -214,21 +235,25 @@ public class rating extends Activity {
 
             @Override
             protected String doInBackground(String... bathroom) {
+                //Create filename
                 String title = (value).concat(".txt");
-                FileInputStream fos = null;
                 try {
-                    fos = openFileInput(title);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                String aString = null;
-                try {
-                    File file = new File(title);
-                    DropboxAPI.Entry response = mDBApi.putFile(title, fos, file.length()
-                            , null, null);
+                    //Open the file one more time, for upload
+                    FileInputStream fis1 = openFileInput(title);
+
+                    //PUSH TO DROPBOX
+                    DropboxAPI.Entry response = mDBApi.putFileOverwrite(title, fis1, (int) fis1.getChannel().size()
+                            , null);
+                    //Not necessary
                     //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
+
                 } catch (DropboxException e) {
-                    //btnSubmit.setText("File download unsuccessful.");
+                    //btnSubmit.setText("File upload unsuccessful.");
+                }
+                  catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 return "SUCCESS!";
             }
