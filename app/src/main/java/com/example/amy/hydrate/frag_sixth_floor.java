@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 public class frag_sixth_floor extends Fragment
 {
-
+//Declaring buttons for use, three per floor: men's, women's, fountain
 
     Button floor_6_1;
     Button floor_6_2;
@@ -19,21 +19,28 @@ public class frag_sixth_floor extends Fragment
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        //What the fragment will look like, from its XML file
         View InputFragmentView = inflater.inflate(R.layout.fragfloor6, container, false);
+        //finds where the buttons are located
         floor_6_1 = (Button) InputFragmentView.findViewById(R.id.f_6_1);
+        floor_6_2 = (Button) InputFragmentView.findViewById(R.id.f_6_2);
+        floor_6_3 = (Button) InputFragmentView.findViewById(R.id.f_6_3);
 
+        //What the button will do when clicked
         floor_6_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //specifies new activity, must call parent activity to be able to switch from fragment
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                //Sets a global string so that the Dropbox API knows what button on what floor was clicked
                 resultActivity.putExtra(frag_basement_floor.bathroom_text,"6_1");
+                //launch the new activity
                 getActivity().startActivity(resultActivity);
 
             }
         });
 
-        floor_6_2 = (Button) InputFragmentView.findViewById(R.id.f_6_2);
-
+        //REPEATED FOR OTHER BUTTONS
         floor_6_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +51,6 @@ public class frag_sixth_floor extends Fragment
             }
         });
 
-        floor_6_3 = (Button) InputFragmentView.findViewById(R.id.f_6_3);
 
         floor_6_3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +62,7 @@ public class frag_sixth_floor extends Fragment
             }
         });
 
+        //displays what the fragment looks like
         return InputFragmentView;
     }
 }

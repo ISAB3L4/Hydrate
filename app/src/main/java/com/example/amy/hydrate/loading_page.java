@@ -7,16 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-
-
-//This is the class that will first be run when the app is first opened
-//Extends = inherits, implements means it interfaces with another class
+//extends for Activity, uses OnClickListener for enter button
 public class loading_page extends Activity implements OnClickListener {
 
-    //Creating button objects, which extend (inherit) the View class
+    //Creating Button to enter application
     private Button first_button;
 
-
+    //displays layout in activity_lodaing_page.xml, sets what function the button will call
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //The super keyword is used to refer to the parent class in java
@@ -32,16 +29,13 @@ public class loading_page extends Activity implements OnClickListener {
 
     }
 
+    //function the button will call when clicked
     @Override
-	/*onClick is what is called when the buttons are pressed and they take in Views as arguments
-	 * as buttons are children of the view class, buttons can polymorphically be passed in. The button
-	 * that called the onClick is automatically fed in*/
     public void onClick(View v) {
         launchResultActivity();
     }
 
-    /* The launchResultActivity method is used to start a new activity from within an onClickListener
-     * */
+    //Launches a new activity when button is clicked,  must call an intent
     private void launchResultActivity() {
 
         Intent resultActivity = new Intent(loading_page.this, floor_swipe.class);
@@ -49,6 +43,8 @@ public class loading_page extends Activity implements OnClickListener {
         //Launches the new activity
         startActivity(resultActivity);
     }
+
+    //To resume the app when going to Dropbox API
     @Override
     protected void onPostResume() {
         super.onPostResume();

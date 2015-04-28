@@ -11,39 +11,41 @@ import android.widget.ImageButton;
 
 public class frag_third_floor extends Fragment
 {
-
+    //Declaring buttons for use, three per floor: men's, women's, fountain
     Button floor_3_1;
     Button floor_3_2;
     Button floor_3_3;
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        //What the fragment will look like, from its XML file
         View InputFragmentView = inflater.inflate(R.layout.fragfloor3, container, false);
+        //finds where the buttons are located
         floor_3_1 = (Button) InputFragmentView.findViewById(R.id.f_3_1);
+        floor_3_2 = (Button) InputFragmentView.findViewById(R.id.f_3_2);
+        floor_3_3 = (Button) InputFragmentView.findViewById(R.id.f_3_3);
 
+        //What the button will do when clicked
         floor_3_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //specifies new activity, must call parent activity to be able to switch from fragment
                 Intent resultActivity = new Intent(getActivity(), rating.class);
+                //Sets a global string so that the Dropbox API knows what button on what floor was clicked
                 resultActivity.putExtra(frag_basement_floor.bathroom_text,"3_1");
+                //launch the new activity
                 getActivity().startActivity(resultActivity);
-
             }
         });
-
-        floor_3_2 = (Button) InputFragmentView.findViewById(R.id.f_3_2);
-
+        //REPEATED FOR OTHER BUTTONS
         floor_3_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultActivity = new Intent(getActivity(), rating.class);
                 resultActivity.putExtra(frag_basement_floor.bathroom_text,"3_2");
                 getActivity().startActivity(resultActivity);
-
             }
         });
-
-        floor_3_3 = (Button) InputFragmentView.findViewById(R.id.f_3_3);
 
         floor_3_3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +56,7 @@ public class frag_third_floor extends Fragment
             }
         });
 
-
+        //displays what the fragment looks like
         return InputFragmentView;
     }
 }
