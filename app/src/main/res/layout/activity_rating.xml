@@ -52,7 +52,7 @@
         android:paddingBottom="10dp"
         android:paddingTop="25dp"/>
 
-    <!--Radiobuttons for Tag-->
+    <!--Radiobuttons for Tag in a gRidlayout w their TextView displays-->
 <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

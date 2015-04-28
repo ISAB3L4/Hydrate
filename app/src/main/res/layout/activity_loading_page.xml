@@ -37,8 +37,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="350dp"
-            android:src="@drawable/logo"
-            android:layout_gravity="center_horizontal" />
+            android:src="@drawable/logo2"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5dp"/>
 
         <TextView android:text="@string/details"
             android:layout_width="wrap_content"
