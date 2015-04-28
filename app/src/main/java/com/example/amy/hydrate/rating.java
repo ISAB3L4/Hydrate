@@ -179,17 +179,7 @@ public class rating extends Activity {
                 byte[] buffer = new byte[((int) file.getChannel().size())];
                 file.read(buffer,0, (int) file.getChannel().size());
                 file.close();
-
-                //buffer[(int) file.getChannel().size()] = float2ByteArray(ratingBar.getRating())[1];
-
                 aString = new String(buffer);
-                final String finalAString1 = aString;
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        btnSubmit.setText(finalAString1);
-                    }
-                });
-                file.close();
 
             } catch (DropboxException e) {
                 //btnSubmit.setText("File download unsuccessful.");
@@ -215,6 +205,8 @@ public class rating extends Activity {
                 }
             });
 
+            //And here, we write the new cumulative rating and the number of ratings
+            //to the file for upload
             try {
                 FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
                 fos.write(Integer.toString(rating).getBytes());
