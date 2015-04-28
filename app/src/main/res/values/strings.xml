@@ -45,6 +45,8 @@
     <string name="title_activity_loading_page">Welcome!</string>
 
     <string name="info">Legend</string>
+    <string name="locator">Location Description</string>
+    <string name="currentrate">Current Rating:</string>
 
     <string name="wifi">Wifi available?</string>
     <string name="smell">Does is it smell bad?</string>
