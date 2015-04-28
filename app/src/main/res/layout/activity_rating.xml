@@ -63,7 +63,7 @@
         android:paddingTop="25dp">
 
     <!-- Radio buttons for tags with label-->
-        <RadioButton android:id="@+id/has_wifi"
+        <CheckBox android:id="@+id/has_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
@@ -71,7 +71,7 @@
         android:clickable="true"
         android:text="@string/wifi"
         android:elegantTextHeight="false"
-        android:checked="false"
+        android:checked="true"
             android:enabled="true" />
 
     <!--Displays current count for tags -->
@@ -82,7 +82,7 @@
         android:textSize="25sp"/>
 
 
-        <RadioButton android:id="@+id/is_smelly"
+        <CheckBox android:id="@+id/is_smelly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
@@ -96,7 +96,7 @@
         android:textColor="@android:color/black"
         android:textSize="25sp"/>
 
-        <RadioButton android:id="@+id/toilet_paper"
+        <CheckBox android:id="@+id/toilet_paper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
