@@ -71,7 +71,8 @@
         android:clickable="true"
         android:text="@string/wifi"
         android:elegantTextHeight="false"
-        android:checked="false" />
+        android:checked="false"
+            android:enabled="true" />
 
     <!--Displays current count for tags -->
         <TextView android:id="@+id/wifi_result"
