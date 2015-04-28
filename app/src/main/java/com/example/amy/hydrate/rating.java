@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import android.view.View;
 import android.widget.Button;
@@ -28,14 +29,18 @@ import com.dropbox.client2.session.AppKeyPair;
 public class rating extends Activity {
 
     String value;
+    //The two Dropbox folder related keys necessary to access the data we've stored
     final static private String APP_KEY = "cxepcok6btcf0vh";
     final static private String APP_SECRET = "vh398xojy7flrbk";
-    private DropboxAPI<AndroidAuthSession> mDBApi;
-    private String accessToken;
-    private RatingBar ratingBar;
-    private Button btnSubmit;
     private AppKeyPair appKeys;
     private AndroidAuthSession session;
+    private DropboxAPI<AndroidAuthSession> mDBApi;
+    private String accessToken;
+
+    //We also need the IDs of both the rating and the submit button
+    private RatingBar ratingBar;
+    private Button btnSubmit;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,10 +48,16 @@ public class rating extends Activity {
         setContentView(R.layout.activity_rating);
         addListenerOnRatingBar();
         addListenerOnButton();
+
+        //This value here tells the rating class which bathroom has been clicked from the floor
+        //Note that the variable bathroom_text is public, so every .java file that has a button
+        //that goes to this rating class modifies that bathroom_text variable differently.
+        //This allows us to create different filenames
         value=getIntent().getExtras().getString(frag_basement_floor.bathroom_text);
     }
 
     private void addListenerOnButton() {
+        //Find the submit button
         btnSubmit=(Button) findViewById(R.id.submit_rating);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +68,7 @@ public class rating extends Activity {
         });
     }
     private void addListenerOnRatingBar() {
+        //Find the rating
         ratingBar=(RatingBar) findViewById(R.id.ratingBar);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -70,16 +82,20 @@ public class rating extends Activity {
     // Before attempting to fetch the URL, makes sure that there is a network connection.
     //This
     public void myClickHandler() {
+        //This batch of code is directly from Andriod Stuido's tutorial. It's just checking to make
+        //sure that there is a network connection
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected())
         {
-
+            //If there is a network connection
             appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
             SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
             String token = prefs.getString(APP_KEY, null);
 
+            //This part of the code is supposed to create a new session with existing keys,
+            //if they exist
             if (token != null) {
                 session = new AndroidAuthSession(appKeys, token);
                 mDBApi = new DropboxAPI<AndroidAuthSession>(session);
@@ -104,6 +120,7 @@ public class rating extends Activity {
      protected void onResume()
      {
      super.onResume();
+         //This is directly from DropBox's tutorial.
      if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
      try {
      // Required to complete auth, sets the access token on the session
@@ -114,8 +131,13 @@ public class rating extends Activity {
          SharedPreferences.Editor editor = prefs.edit();
          editor.putString(APP_KEY, accessToken);
          editor.commit();
+
+         //This line of code creates a new class that extends the AsyncTask class (background task)
          new DB_Download().execute(value);
-        btnSubmit.setText("Sending data...");
+
+         //For debugging purposes
+         btnSubmit.setText("Sending data...");
+
      } catch (IllegalStateException e) {
      Log.i("DbAuthLog", "Error authenticating", e);
      }
@@ -124,31 +146,45 @@ public class rating extends Activity {
 
     private class DB_Download extends AsyncTask<String,Void,String>
     {
-
+        //Button btnSubmit=(Button) findViewById(R.id.submit_rating);
         @Override
         protected String doInBackground(String... params) {
-            String title = "/".concat(value).concat(".txt");
-            btnSubmit.setText(title);
-            File file = new File(title);
+            //Create file name
+            String title = (value).concat(".txt");
+
+            //Create the input string that will hold the data from the downloaded file
             String aString = null;
-            FileOutputStream outputStream = null;
+            //Create new file
+            FileOutputStream fos = null;
             try {
-                outputStream = new FileOutputStream(file);//, Context.MODE_PRIVATE);
-                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, outputStream, null);
-                Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
-                btnSubmit.setText("Download successful");
-            } catch (DropboxException e) {
-                btnSubmit.setText("File download unsuccessful.");
+                fos = openFileOutput(title, Context.MODE_PRIVATE);
             } catch (FileNotFoundException e) {
-                //btnSubmit.setText("File not found.");
+                e.printStackTrace();
+            }
+
+            try {
+
+                //GET FILE FROM DROPBOX HERE
+                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
+
+                //Not really necessary
+                //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+
+            } catch (DropboxException e) {
+                //btnSubmit.setText("File download unsuccessful.");
             }
             //Convert OutputStream to String
             try {
-                aString = Convert_to_String(outputStream);
+                aString = Convert_to_String(fos);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            //Add_Calculate_New_Rating(aString);
+            Add_Calculate_New_Rating(aString);
+            final String finalAString = aString;
+            runOnUiThread(new Runnable() {
+                public void run() {btnSubmit.setText(finalAString); }
+            });
+
             return aString;
         }
         protected String Convert_to_String(FileOutputStream outputStream) throws UnsupportedEncodingException {
@@ -163,34 +199,40 @@ public class rating extends Activity {
         //then convert all of the ratings to integers
         //then average them for the new rating
         myRating.concat(Integer.toString(ratingBar.getNumStars()));
+
         int result=0;
         for (int i = 0; i < myRating.length(); i++) {
             try {
+
                 result+= (int)(myRating.charAt(i))-48; //ASCII value of 0 is 48
+
             } catch (NumberFormatException nfe) {};
         }
-        ratingBar.setNumStars(result/myRating.length());
+        //ratingBar.setNumStars(result/myRating.length());
         //Call the upload function
-       //new DB_Upload().execute(value);
+        new DB_Upload().execute(value);
+
         return myRating;
     }
     private class DB_Upload extends AsyncTask<String,Void,String> {
 
         @Override
         protected String doInBackground(String... bathroom) {
-            String title = "/".concat(value).concat(".txt");
-            File file = new File(title);
-            String aString = null;
-            FileInputStream inputStream = null;
+            String title =(value).concat(".txt");
+            FileInputStream fos = null;
             try {
-                inputStream = new FileInputStream(file);
-                DropboxAPI.Entry response = mDBApi.putFile("/magnum-opus.txt", inputStream,
-                        file.length(), null, null);
-                Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
+                fos = openFileInput(title);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            String aString = null;
+            try {
+                File file=new File(title);
+                DropboxAPI.Entry response = mDBApi.putFile(title, fos,file.length()
+                        , null, null);
+                //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
             } catch (DropboxException e) {
                 //btnSubmit.setText("File download unsuccessful.");
-            } catch (FileNotFoundException e) {
-                //btnSubmit.setText("File not found.");
             }
             return "SUCCESS!";
         }

@@ -11,16 +11,14 @@ import android.widget.Button;
 
 //This is the class that will first be run when the app is first opened
 //Extends = inherits, implements means it interfaces with another class
-public class loading_page extends Activity implements OnClickListener
-{
+public class loading_page extends Activity implements OnClickListener {
 
     //Creating button objects, which extend (inherit) the View class
     private Button first_button;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         //The super keyword is used to refer to the parent class in java
         super.onCreate(savedInstanceState);
 
@@ -38,22 +36,22 @@ public class loading_page extends Activity implements OnClickListener
 	/*onClick is what is called when the buttons are pressed and they take in Views as arguments
 	 * as buttons are children of the view class, buttons can polymorphically be passed in. The button
 	 * that called the onClick is automatically fed in*/
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         launchResultActivity();
     }
 
     /* The launchResultActivity method is used to start a new activity from within an onClickListener
      * */
-    private void launchResultActivity()
-    {
+    private void launchResultActivity() {
 
         Intent resultActivity = new Intent(loading_page.this, floor_swipe.class);
 
         //Launches the new activity
         startActivity(resultActivity);
     }
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
 }
-
-
 
