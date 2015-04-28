@@ -146,47 +146,43 @@ public class rating extends Activity {
 
     private class DB_Download extends AsyncTask<String,Void,String>
     {
-        //Button btnSubmit=(Button) findViewById(R.id.submit_rating);
         @Override
         protected String doInBackground(String... params) {
             //Create file name
             String title = (value).concat(".txt");
 
             //Create the input string that will hold the data from the downloaded file
-            String aString = null;
+            String aString=null;
+
             //Create new file
-            FileOutputStream fos = null;
             try {
-                fos = openFileOutput(title, Context.MODE_PRIVATE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                    FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
 
-            try {
+                    //GET FILE FROM DROPBOX HERE
+                    DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
 
-                //GET FILE FROM DROPBOX HERE
-                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
+                    //Not really necessary
+                    //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
 
-                //Not really necessary
-                //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+                    aString = Convert_to_String(fos);
+                    final String finalAString = aString;
+                    runOnUiThread(new Runnable() {
+                        public void run() {btnSubmit.setText(finalAString); }
+                    });
 
-            } catch (DropboxException e) {
-                //btnSubmit.setText("File download unsuccessful.");
-            }
-            //Convert OutputStream to String
-            try {
-                aString = Convert_to_String(fos);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+                } catch (DropboxException e) {
+                    //btnSubmit.setText("File download unsuccessful.");
+                }
+                 catch (FileNotFoundException e)
+                {
+                   e.printStackTrace();
+                }
+                catch (UnsupportedEncodingException e) {
+                   e.printStackTrace();
+    }
             Add_Calculate_New_Rating(aString);
-            final String finalAString = aString;
-            runOnUiThread(new Runnable() {
-                public void run() {btnSubmit.setText(finalAString); }
-            });
-
             return aString;
-        }
+}
         protected String Convert_to_String(FileOutputStream outputStream) throws UnsupportedEncodingException {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             String aString = new String(os.toByteArray(),"UTF-8");
