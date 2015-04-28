@@ -10,26 +10,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Context;
-
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FilterOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
+
+import org.w3c.dom.Text;
+
+import static java.lang.Character.getNumericValue;
 import static java.lang.Float.floatToIntBits;
 
 public class rating extends Activity {
@@ -42,11 +40,19 @@ public class rating extends Activity {
     private AndroidAuthSession session;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private String accessToken;
-    private int user_rating;
 
-    //We also need the IDs of both the rating and the submit button
+    //We also need the IDs of most of the activity_rating layouts
     private RatingBar ratingBar;
     private Button btnSubmit;
+    private CheckBox wifi;
+    private CheckBox poop;
+    private CheckBox toilet;
+    private TextView wifi_result;
+    private TextView poop_result;
+    private TextView toilet_result;
+    private int wifi_num;
+    private int poop_num;
+    private int toilet_num;
 
 
     @Override
@@ -61,6 +67,20 @@ public class rating extends Activity {
         //that goes to this rating class modifies that bathroom_text variable differently.
         //This allows us to create different filenames
         value=getIntent().getExtras().getString(frag_basement_floor.bathroom_text);
+
+        //And we need to find the IDs of some other things in the activity_rating layout
+        wifi= (CheckBox) findViewById(R.id.has_wifi);
+        poop= (CheckBox) findViewById(R.id.is_smelly);
+        toilet=(CheckBox) findViewById(R.id.toilet_paper);
+        wifi_result=(TextView) findViewById(R.id.wifi_result);
+        poop_result=(TextView) findViewById(R.id.smell_result);
+        toilet_result=(TextView) findViewById(R.id.paper_result);
+
+        //NOTE: The Dropbox .txt files are in the format:
+        /**
+            Cumulative Rating (Space) # of Ratings (Space) Wi-Fi (Space) Smelly (Space) Toilet Paper
+            This will be useful later
+         */
     }
 
     private void addListenerOnButton() {
@@ -105,10 +125,10 @@ public class rating extends Activity {
             //if they exist
             if (token != null) {
                 session = new AndroidAuthSession(appKeys, token);
-                mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+                mDBApi = new DropboxAPI<>(session);
             } else {
                 session = new AndroidAuthSession(appKeys);
-                mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+                mDBApi = new DropboxAPI<>(session);
             }
 
             //mDBApi = new DropboxAPI<AndroidAuthSession>(session);
@@ -137,7 +157,7 @@ public class rating extends Activity {
          SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
          SharedPreferences.Editor editor = prefs.edit();
          editor.putString(APP_KEY, accessToken);
-         editor.commit();
+         editor.apply();
 
          //This line of code creates a new class that extends the AsyncTask class (background task)
          new DB_Download().execute(value);
@@ -156,8 +176,10 @@ public class rating extends Activity {
         protected String doInBackground(String... params) {
             //Create file name
             String title = (value).concat(".txt");
+
             //Create the input string that will hold the data from the downloaded file
             String aString = "";
+
             //Create new file
             try {
                 FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
@@ -165,44 +187,71 @@ public class rating extends Activity {
                 //GET FILE FROM DROPBOX HERE
                 DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
                 fos.close();
-                //Not really necessary
+
+                //Not really necessary for our purposes
                 //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
 
-                /**
-                FileWriter new_file=new FileWriter(title);
-                BufferedWriter bw = new BufferedWriter(new_file);
-                bw.write((int)ratingBar.getRating());
-                bw.close();*/
-
-                //Read from new file
+                //Read from new file to byte array
                 FileInputStream file = openFileInput(title);
                 byte[] buffer = new byte[((int) file.getChannel().size())];
                 file.read(buffer,0, (int) file.getChannel().size());
                 file.close();
-                //Assign the data to the string we will edit later
+
+                //Assign the byte array to the string we will edit later
+                //This worked out nicely, since the String constructor has a byte array
+                //parameter for a specific constructor
                 aString = new String(buffer);
 
-            } catch (DropboxException e) {
-                //btnSubmit.setText("File download unsuccessful.");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                //Catch some stuff
+            } catch (DropboxException | IOException e) {
                 e.printStackTrace();
             }
+
             //Then, we need to calculate the new average
+            //Get the user's rating
             int rating=(int)ratingBar.getRating();
+
+            //Now, we split the String based on the spaces. Remember from before:
+            //NOTE: The Dropbox .txt files are in the format:
+            /**
+             Cumulative Rating (Space) # of Ratings (Space) Wi-Fi (Space) Smelly (Space) Toilet Paper
+             This will be useful later
+             */
             String[] string_array=aString.split(" ");
+
+            //We know that the cumulative rating is the first entry in the array, so we add it to the existing user's rating
             rating+=Integer.parseInt(string_array[0]);
+
+            //The reason for having these variables declared as final is because we need to call the
+            //runonUIThread method to edit the View objects on the screen. Inner classes need final variables
+            //We know that the # of rating is in the second entry of the array, so we add it to the existing array
             final int counter=Integer.parseInt(string_array[1])+1;
             final int finalResult = rating;
+
+            //Now that the rating part is done, we move to the tags
+            wifi_num=Integer.parseInt(string_array[2]);
+            poop_num=Integer.parseInt(string_array[3]);
+            toilet_num=Integer.parseInt(string_array[4]);
+            //Start with the Wi-Fi
+            if (wifi.isChecked())
+                wifi_num++;
+            //Then the smell
+            if (poop.isChecked())
+                poop_num++;
+            //Then the toilet paper
+            if (toilet.isChecked())
+                toilet_num++;
 
             //I'm running this part on the UI Thread because you can't touch the viewing components
             //directly from this download thread
             runOnUiThread(new Runnable() {
                 public void run() {
+                    //Set the number of stars
                     ratingBar.setRating(finalResult /counter);
+                    //Set the tag numbers
+                    wifi_result.setText("(".concat(Integer.toString(wifi_num)).concat(")"));
+                    poop_result.setText("(".concat(Integer.toString(poop_num)).concat(")"));
+                    toilet_result.setText("(".concat(Integer.toString(toilet_num)).concat(")"));
                 }
             });
 
@@ -213,6 +262,12 @@ public class rating extends Activity {
                 fos.write(Integer.toString(rating).getBytes());
                 fos.write(" ".getBytes());
                 fos.write(Integer.toString(counter).getBytes());
+                fos.write(" ".getBytes());
+                fos.write(Integer.toString(wifi_num).getBytes());
+                fos.write(" ".getBytes());
+                fos.write(Integer.toString(poop_num).getBytes());
+                fos.write(" ".getBytes());
+                fos.write(Integer.toString(toilet_num).getBytes());
                 fos.close();
             } catch (IOException e)
             {
@@ -240,12 +295,7 @@ public class rating extends Activity {
                     //Not necessary
                     //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
 
-                } catch (DropboxException e) {
-                    //btnSubmit.setText("File upload unsuccessful.");
-                }
-                  catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (DropboxException | IOException e) {
                     e.printStackTrace();
                 }
                 return "SUCCESS!";
