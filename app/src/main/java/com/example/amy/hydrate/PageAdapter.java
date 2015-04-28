@@ -11,6 +11,7 @@ class PagerAdapter extends FragmentPagerAdapter {
         // TODO Auto-generated constructor stub
     }
 
+    //gets and returns the fragments for the slider page that is being called
     @Override
     public Fragment getItem(int arg0) {
         // TODO Auto-generated method stub
@@ -41,6 +42,8 @@ class PagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
+
+    //title strings for the title slider to show over the images
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
@@ -69,6 +72,8 @@ class PagerAdapter extends FragmentPagerAdapter {
 
         return null;
     }
+
+    //creates the windows count for the slider
         @Override
     public int getCount() {
         // TODO Auto-generated method stub
