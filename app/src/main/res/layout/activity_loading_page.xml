@@ -26,17 +26,14 @@
         android:layout_gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
-        <TextView android:text="@string/app_name"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textSize="60dp"
-            android:textColor="@android:color/white"/>
+            android:layout_height="90dp"
+            android:src="@drawable/name"/>
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="350dp"
+            android:layout_height="300dp"
             android:src="@drawable/logo2"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="5dp"/>
@@ -51,10 +48,10 @@
 
         <Button android:id="@+id/enter_button"
             style="?metaButtonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
-            android:text="@string/enter" />
+            android:text="Let's Go!" />
 
     </LinearLayout>
 

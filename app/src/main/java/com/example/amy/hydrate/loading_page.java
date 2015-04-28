@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 //extends for Activity, uses OnClickListener for enter button
 public class loading_page extends Activity implements OnClickListener {
@@ -13,7 +14,7 @@ public class loading_page extends Activity implements OnClickListener {
     //Creating Button to enter application
     private Button first_button;
 
-    //displays layout in activity_lodaing_page.xml, sets what function the button will call
+    //displays layout in activity_loading_page.xml, sets what function the button will call
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //The super keyword is used to refer to the parent class in java
