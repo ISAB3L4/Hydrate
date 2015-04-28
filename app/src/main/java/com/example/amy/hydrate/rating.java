@@ -147,114 +147,112 @@ public class rating extends Activity {
      }
      }
 
-    private class DB_Download extends AsyncTask<String,Void,String>
-    {
+    private class DB_Download extends AsyncTask<String,Void,String> {
         @Override
         protected String doInBackground(String... params) {
             //Create file name
             String title = (value).concat(".txt");
 
             //Create the input string that will hold the data from the downloaded file
-            String aString="";
+            String aString = "";
 
             //Create new file
             try {
-                    FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
+                FileOutputStream fos = openFileOutput(title, Context.MODE_PRIVATE);
 
-                    //GET FILE FROM DROPBOX HERE
-                    DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
-                    fos.close();
-                    //Not really necessary
-                    //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
+                //GET FILE FROM DROPBOX HERE
+                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(title, null, fos, null);
+                fos.close();
+                //Not really necessary
+                //Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
 
-                    //Read from new file
-                    FileInputStream file=openFileInput(title);
-                    byte[] buffer = new byte[10];
-                    file.read(buffer, 0, 10);
-                    file.close();
-                    aString=new String(buffer);
-                    //aString = Convert_to_String(fos);
+                //Read from new file
+                FileInputStream file = openFileInput(title);
+                byte[] buffer = new byte[10];
+                file.read(buffer, 0, 10);
+                file.close();
+                aString = new String(buffer);
 
+            } catch (DropboxException e) {
+                //btnSubmit.setText("File download unsuccessful.");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Add_Calculate_New_Rating(aString);
+            return aString;
+        }
 
+        private String Add_Calculate_New_Rating(String myRating) {
+            //Basically, we will add the new rating to the string
+            //then convert all of the ratings to integers
+            //then average them for the new rating
+            myRating.concat(Integer.toString(ratingBar.getNumStars()));
+
+            int result = 0;
+            for (int i = 0; i < myRating.length(); i++) {
+                try {
+
+                    result += (int) (myRating.charAt(i)) - 48; //ASCII value of 0 is 48
+
+                } catch (NumberFormatException nfe) {
+                }
+                ;
+            }
+            //ratingBar.setNumStars(result/myRating.length());
+            //Call the upload function
+            new DB_Upload().execute(value);
+
+            return myRating;
+        }
+    }
+
+        private class DB_Upload extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... bathroom) {
+                String title = (value).concat(".txt");
+                FileInputStream fos = null;
+                try {
+                    fos = openFileInput(title);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                String aString = null;
+                try {
+                    File file = new File(title);
+                    DropboxAPI.Entry response = mDBApi.putFile(title, fos, file.length()
+                            , null, null);
+                    //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
                 } catch (DropboxException e) {
                     //btnSubmit.setText("File download unsuccessful.");
                 }
-                 catch (FileNotFoundException e)
-                {
-                   e.printStackTrace();
-                }
-                catch (UnsupportedEncodingException e) {
-                   e.printStackTrace();
-                }
-                catch (IOException e) {
-                 e.printStackTrace();
-                }
-            Add_Calculate_New_Rating(aString);
-            return aString;
-    }
-
-    private String Add_Calculate_New_Rating(String myRating) {
-        //Basically, we will add the new rating to the string
-        //then convert all of the ratings to integers
-        //then average them for the new rating
-        myRating.concat(Integer.toString(ratingBar.getNumStars()));
-
-        int result=0;
-        for (int i = 0; i < myRating.length(); i++) {
-            try {
-
-                result+= (int)(myRating.charAt(i))-48; //ASCII value of 0 is 48
-
-            } catch (NumberFormatException nfe) {};
+                return "SUCCESS!";
+            }
         }
-        //ratingBar.setNumStars(result/myRating.length());
-        //Call the upload function
-        new DB_Upload().execute(value);
-
-        return myRating;
-    }
-    private class DB_Upload extends AsyncTask<String,Void,String> {
 
         @Override
-        protected String doInBackground(String... bathroom) {
-            String title =(value).concat(".txt");
-            FileInputStream fos = null;
-            try {
-                fos = openFileInput(title);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            String aString = null;
-            try {
-                File file=new File(title);
-                DropboxAPI.Entry response = mDBApi.putFile(title, fos,file.length()
-                        , null, null);
-                //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
-            } catch (DropboxException e) {
-                //btnSubmit.setText("File download unsuccessful.");
-            }
-            return "SUCCESS!";
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rating, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_rating, menu);
             return true;
         }
-        return super.onOptionsItemSelected(item);
-    }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
 
 }
