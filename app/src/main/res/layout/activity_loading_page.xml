@@ -6,10 +6,7 @@
     android:background="@drawable/background"
     tools:context="com.example.amy.hydrate.loading_page">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-
+<!-- linea layout for loading page elements-->
 
     <LinearLayout android:id="@+id/fullscreen_content_controls"
         style="?metaButtonBarStyle"
@@ -18,11 +15,12 @@
         android:layout_gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
+        <!-- name of app-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:src="@drawable/name"/>
-
+        <!-- logo of app-->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="300dp"
@@ -30,6 +28,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="5dp"/>
 
+        <!-- developer details-->
         <TextView android:text="@string/details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +37,7 @@
             android:textSize="10sp"
             android:textColor="@android:color/white"/>
 
+        <!--clickable button to enter application -->
         <Button android:id="@+id/enter_button"
             style="?metaButtonBarButtonStyle"
             android:layout_width="wrap_content"

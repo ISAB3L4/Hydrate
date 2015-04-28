@@ -12,14 +12,14 @@
     android:clickable="false"
     android:orientation="vertical">
 
-<!-- Display CUrrent average rating of location-->
+<!-- Display Current average rating of location-->
     <TextView android:id="@+id/display_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="25sp"/>
 
-    <!-- Tell them to leave their own-->
+    <!-- Tell them to leave their own rating-->
     <TextView android:text="@string/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
         android:paddingBottom="10dp"
         android:paddingTop="25dp"/>
 
-    <!--Radiobuttons for Tag in a gRidlayout w their TextView displays-->
+    <!--Radiobuttons for Tag in a Gridlayout w their TextView displays-->
 <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:paddingBottom="25dp"
         android:paddingTop="25dp">
 
-    <!-- Radiobutton for tags with label-->
+    <!-- Radio buttons for tags with label-->
         <RadioButton android:id="@+id/has_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
 
 </GridLayout>
 
-    <!-- Submit Button to upload rating to Dropbox-->
+    <!-- Submit Button to upload rating to DropBox Inc-->
     <Button android:id="@+id/submit_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
