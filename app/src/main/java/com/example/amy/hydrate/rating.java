@@ -303,16 +303,21 @@ public class rating extends Activity {
             wifi_num=Integer.parseInt(string_array[2]);
             poop_num=Integer.parseInt(string_array[3]);
             toilet_num=Integer.parseInt(string_array[4]);
-            //Start with the Wi-Fi
-            if (wifi.isChecked())
-                wifi_num++;
-            //Then the smell
-            if (poop.isChecked())
-                poop_num++;
-            //Then the toilet paper
-            if (toilet.isChecked())
-                toilet_num++;
-
+            if(!first_time) {
+                //Start with the Wi-Fi
+                if (wifi.isChecked())
+                    wifi_num++;
+                //Then the smell
+                if (poop.isChecked())
+                    poop_num++;
+                //Then the toilet paper
+                if (toilet.isChecked())
+                    toilet_num++;
+            }
+            else
+            {
+                //Do nothing
+            }
             //I'm running this part on the UI Thread because you can't touch the viewing components
             //directly from this download thread
             runOnUiThread(new Runnable() {
