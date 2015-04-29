@@ -28,6 +28,7 @@ public class loading_page extends Activity implements OnClickListener {
     final static private String APP_SECRET = "vh398xojy7flrbk";
     private AppKeyPair appKeys;
     private AndroidAuthSession session;
+    public static NetworkInfo networkInfo;
     public static DropboxAPI<AndroidAuthSession> mDBApi;
     private String accessToken;
 
@@ -65,7 +66,7 @@ public class loading_page extends Activity implements OnClickListener {
         //sure that there is a network connection
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             //If there is a network connection
             appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
@@ -84,7 +85,7 @@ public class loading_page extends Activity implements OnClickListener {
             //mDBApi = new DropboxAPI<AndroidAuthSession>(session);
             mDBApi.getSession().startOAuth2Authentication(loading_page.this);
         } else {
-            //btnSubmit.setText("No network connection available.");
+            first_button.setText("No network connection available.");
         }
     }
     @Override

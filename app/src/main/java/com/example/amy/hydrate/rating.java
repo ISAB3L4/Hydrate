@@ -1,20 +1,14 @@
 package com.example.amy.hydrate;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Context;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,11 +18,6 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
-
-import org.w3c.dom.Text;
-
-import static java.lang.Character.getNumericValue;
-import static java.lang.Float.floatToIntBits;
 
 public class rating extends Activity {
 
@@ -43,6 +32,7 @@ public class rating extends Activity {
 
     //We also need the IDs of most of the activity_rating layouts
     private RatingBar ratingBar;
+    private TextView num_visitors;
     private Button btnSubmit;
     private CheckBox wifi;
     private CheckBox poop;
@@ -50,17 +40,18 @@ public class rating extends Activity {
     private TextView wifi_result;
     private TextView poop_result;
     private TextView toilet_result;
+    private TextView current_rating;
     private int wifi_num;
     private int poop_num;
     private int toilet_num;
+    private TextView title;
+    private boolean first_time;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
-        addListenerOnRatingBar();
-        addListenerOnButton();
         mDBApi=loading_page.mDBApi;
 
         //This value here tells the rating class which bathroom has been clicked from the floor
@@ -76,38 +67,100 @@ public class rating extends Activity {
         wifi_result=(TextView) findViewById(R.id.wifi_result);
         poop_result=(TextView) findViewById(R.id.smell_result);
         toilet_result=(TextView) findViewById(R.id.paper_result);
-        //If it's a water fountain, we don't need the toilet paper tag
+        title=(TextView)findViewById(R.id.location);
+        btnSubmit=(Button) findViewById(R.id.submit_rating);
+        ratingBar=(RatingBar) findViewById(R.id.ratingBar);
+        num_visitors=(TextView)findViewById(R.id.num_visitors);
+        current_rating=(TextView)findViewById(R.id.current_rating);
+
+        //"Clear" old instances by resetting submit button
+        btnSubmit.setText("Submit My Rating");
+
+        //After finding stuff, add listeners
+        addListenerOnRatingBar();
+        addListenerOnButton();
+
+        //Now, for added functionality, we would like to tell the user which bathroom or
+        //water fountain they're rating. We're also hiding the "toilet paper" tag for water fountains
         if (value.contains("_1"))
         {
-            toilet.setVisibility(View.INVISIBLE);
-            toilet_result.setVisibility(View.INVISIBLE);
+            if (value.substring(0,1)!="b") {
+                title.setText("Floor ".concat(value.substring(0, 1)).concat(": Water Fountain"));
+                toilet.setVisibility(View.INVISIBLE);
+                toilet_result.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                title.setText("Basement Floor: Water Fountain");
+                toilet.setVisibility(View.INVISIBLE);
+                toilet_result.setVisibility(View.INVISIBLE);
+            }
+        }
+        else if(value.contains("_2"))
+        {
+            if (value.substring(0,1)!="b") {
+                title.setText("Floor ".concat(value.substring(0, 1)).concat(": Ladies' Room"));
+            }
+            else
+            {
+                title.setText("Basement Floor: Ladies' Room");
+            }
+        }
+        else if(value.contains("_3"))
+        {
+            if (value.substring(0,1)!="b") {
+                title.setText("Floor ".concat(value.substring(0, 1)).concat(": Men's Room"));
+            }
+            else {
+                title.setText("Basement Floor: Men's Room");
+            }
+        }
+        else
+        {
+            //Do nothing. Shouldn't come here
         }
 
-        //Call the Download_DB class and execute it to populate data
-        new DB_Download().execute(value);
+        //For added functionality, check to make sure that the app is connected to the Internet before calling anything
+        if (loading_page.networkInfo != null && loading_page.networkInfo.isConnected()) {
+            //Call the Download_DB class and execute it to populate data
+            //I used a first_time variable to stop the app from uploading irrevelant data from starting
+            //the rating class
+            first_time=true;
+            new DB_Download().execute(value);
+        }
+        else
+            btnSubmit.setText("No Network Connection");
+
 
         //NOTE: The Dropbox .txt files are in the format:
         /**
-            Cumulative Rating (Space) # of Ratings (Space) Wi-Fi (Space) Smelly (Space) Toilet Paper
-            This will be useful later
+         Cumulative Rating (Space) # of Ratings (Space) Wi-Fi (Space) Smelly (Space) Toilet Paper
+         This will be useful later
          */
     }
 
     private void addListenerOnButton() {
         //Find the submit button
-        btnSubmit=(Button) findViewById(R.id.submit_rating);
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
                 //myClickHandler();
-                new DB_Download().execute(value);
+                //For added functionality, check to make sure that the app is connected to the Internet before calling anything
+                if (loading_page.networkInfo != null && loading_page.networkInfo.isConnected()) {
+                    //Call the Download_DB class and execute it
+
+                    new DB_Download().execute(value);
+                }
+                else
+                    btnSubmit.setText("No Network Connection");
             }
         });
     }
     private void addListenerOnRatingBar() {
         //Find the rating
-        ratingBar=(RatingBar) findViewById(R.id.ratingBar);
+
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b)
@@ -118,38 +171,40 @@ public class rating extends Activity {
     }
 
     /**
-    // When user clicks button, calls AsyncTask in DB_Download.
-    // Before attempting to fetch the URL, makes sure that there is a network connection.
-    //This
-    public void myClickHandler() {
-        //This batch of code is directly from Android Studio's tutorial. It's just checking to make
-        //sure that there is a network connection
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected())
-        {
-            //If there is a network connection
-            appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-            SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
-            String token = prefs.getString(APP_KEY, null);
+     Network checking and Dropbox authentication occur at the start of the app now
+     So, it doesn't need to happen again
+     // When user clicks button, calls AsyncTask in DB_Download.
+     // Before attempting to fetch the URL, makes sure that there is a network connection.
+     //This
+     public void myClickHandler() {
+     //This batch of code is directly from Android Studio's tutorial. It's just checking to make
+     //sure that there is a network connection
+     ConnectivityManager connMgr = (ConnectivityManager)
+     getSystemService(Context.CONNECTIVITY_SERVICE);
+     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+     if (networkInfo != null && networkInfo.isConnected())
+     {
+     //If there is a network connection
+     appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+     SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
+     String token = prefs.getString(APP_KEY, null);
 
-            //This part of the code is supposed to create a new session with existing keys,
-            //if they exist
-            if (token != null) {
-                session = new AndroidAuthSession(appKeys, token);
-                mDBApi = new DropboxAPI<>(session);
-            } else {
-                session = new AndroidAuthSession(appKeys);
-                mDBApi = new DropboxAPI<>(session);
-            }
+     //This part of the code is supposed to create a new session with existing keys,
+     //if they exist
+     if (token != null) {
+     session = new AndroidAuthSession(appKeys, token);
+     mDBApi = new DropboxAPI<>(session);
+     } else {
+     session = new AndroidAuthSession(appKeys);
+     mDBApi = new DropboxAPI<>(session);
+     }
 
-            //mDBApi = new DropboxAPI<AndroidAuthSession>(session);
-            mDBApi.getSession().startOAuth2Authentication(rating.this);
-        } else {
-            btnSubmit.setText("No network connection available.");
-        }
-    }*/
+     //mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+     mDBApi.getSession().startOAuth2Authentication(rating.this);
+     } else {
+     btnSubmit.setText("No network connection available.");
+     }
+     }*/
     @Override
     protected void onPause()
     {
@@ -157,15 +212,15 @@ public class rating extends Activity {
     }
 
     @Override
-     protected void onResume()
-     {
-     super.onResume();
-     /**
+    protected void onResume()
+    {
+        super.onResume();
+        /**
          //This is directly from DropBox's tutorial.
-     if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
-     try {
-     // Required to complete auth, sets the access token on the session
-     mDBApi.getSession().finishAuthentication();
+         if (mDBApi!=null && mDBApi.getSession().authenticationSuccessful()) {
+         try {
+         // Required to complete auth, sets the access token on the session
+         mDBApi.getSession().finishAuthentication();
          accessToken = mDBApi.getSession().getOAuth2AccessToken();
          // Store it locally in our app for later use
          SharedPreferences prefs = getSharedPreferences("DROPBOX_PREFS", 0);
@@ -181,12 +236,12 @@ public class rating extends Activity {
          //wait(2000);
          //btnSubmit.setText("Submit my Rating!");
 
-     } catch (IllegalStateException e) {
-     Log.i("DbAuthLog", "Error authenticating", e);
-     }
-     }
-      */
-     }
+         } catch (IllegalStateException e) {
+         Log.i("DbAuthLog", "Error authenticating", e);
+         }
+         }
+         */
+    }
 
     private class DB_Download extends AsyncTask<String,Void,String> {
         @Override
@@ -263,11 +318,19 @@ public class rating extends Activity {
             runOnUiThread(new Runnable() {
                 public void run() {
                     //Set the number of stars
-                    ratingBar.setRating(finalResult /counter);
+                    if ((int)finalResult/counter==1)
+                        //Singular: Star
+                        current_rating.setText("Current Rating: ".concat(Integer.toString(finalResult /counter)).concat(" star"));
+                    else
+                        //Plural: Stars
+                        current_rating.setText("Current Rating: ".concat(Integer.toString(finalResult /counter)).concat(" stars"));
                     //Set the tag numbers
                     wifi_result.setText("(".concat(Integer.toString(wifi_num)).concat(")"));
                     poop_result.setText("(".concat(Integer.toString(poop_num)).concat(")"));
                     toilet_result.setText("(".concat(Integer.toString(toilet_num)).concat(")"));
+                    num_visitors.setText("Number of Visitors: ".concat(Integer.toString(counter)));
+                    //Set rating back to default
+                    ratingBar.setRating(3);
                 }
             });
 
@@ -290,53 +353,66 @@ public class rating extends Activity {
                 e.printStackTrace();
             }
 
-            new DB_Upload().execute(value);
+            //We don't want to upload the file if the user just got there.
+            //We are calling this DB_Download class to propagate data at the start, we don't want to
+            //upload false data
+            if (!first_time) {
+                new DB_Upload().execute(value);
+            }
+            first_time=false;
             return "Success!";
         }
     }
 
-        private class DB_Upload extends AsyncTask<String, Void, String> {
-
-            @Override
-            protected String doInBackground(String... bathroom) {
-                //Create filename
-                String title = (value).concat(".txt");
-                try {
-                    //Open the file one more time, for upload
-                    FileInputStream fis1 = openFileInput(title);
-
-                    //PUSH TO DROPBOX, overwriting the old file there
-                    DropboxAPI.Entry response = mDBApi.putFileOverwrite(title, fis1, (int) fis1.getChannel().size()
-                            , null);
-                    //Not necessary
-                    //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
-
-                } catch (DropboxException | IOException e) {
-                    e.printStackTrace();
-                }
-                return "SUCCESS!";
-            }
-        }
+    private class DB_Upload extends AsyncTask<String, Void, String> {
 
         @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_rating, menu);
+        protected String doInBackground(String... bathroom) {
+            //Create filename
+            String title = (value).concat(".txt");
+            try {
+                //Open the file one more time, for upload
+                FileInputStream fis1 = openFileInput(title);
+
+                //PUSH TO DROPBOX, overwriting the old file there
+                DropboxAPI.Entry response = mDBApi.putFileOverwrite(title, fis1, (int) fis1.getChannel().size()
+                        , null);
+                //Not necessary
+                //Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
+
+            } catch (DropboxException | IOException e) {
+                e.printStackTrace();
+            }
+            //I'm running this part on the UI Thread because you can't touch the viewing components
+            //directly from this download thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    //Let the user know that their rating has been submitted.
+                    btnSubmit.setText("Done");
+                }
+            });
+            return "SUCCESS!";
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_rating, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-
+        return super.onOptionsItemSelected(item);
+    }
 }
