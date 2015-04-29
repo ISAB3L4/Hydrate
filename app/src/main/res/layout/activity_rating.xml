@@ -18,7 +18,7 @@
         android:textColor="@android:color/black"
         android:textSize="25sp"
         />
-    Displays location you're at
+    <!--Displays location you're at-->
     <TextView android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         android:paddingBottom="5dp"
         android:paddingTop="25dp">
 
-    <!-- Radio buttons for tags with label-->
+    <!-- Checkbox buttons for tags with label-->
         <CheckBox android:id="@+id/has_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
         android:textSize="15sp"
         android:layout_gravity="bottom|center_horizontal"/>
 
-    <!-- Display Current average rating of location-->
+    <!-- Displays number of visitors-->
     <TextView android:text="@string/visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
