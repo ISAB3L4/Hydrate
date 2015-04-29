@@ -84,7 +84,7 @@ public class rating extends Activity {
         //water fountain they're rating. We're also hiding the "toilet paper" tag for water fountains
         if (value.contains("_1"))
         {
-            if (value.substring(0,1)!="b") {
+            if (!(value.substring(0, 1).equals("b"))) {
                 title.setText("Floor ".concat(value.substring(0, 1)).concat(": Water Fountain"));
                 toilet.setVisibility(View.INVISIBLE);
                 toilet_result.setVisibility(View.INVISIBLE);
@@ -98,7 +98,7 @@ public class rating extends Activity {
         }
         else if(value.contains("_2"))
         {
-            if (value.substring(0,1)!="b") {
+            if (!(value.substring(0, 1).equals("b"))) {
                 title.setText("Floor ".concat(value.substring(0, 1)).concat(": Ladies' Room"));
             }
             else
@@ -108,7 +108,7 @@ public class rating extends Activity {
         }
         else if(value.contains("_3"))
         {
-            if (value.substring(0,1)!="b") {
+            if (!(value.substring(0, 1).equals("b"))) {
                 title.setText("Floor ".concat(value.substring(0, 1)).concat(": Men's Room"));
             }
             else {
