@@ -328,7 +328,10 @@ public class rating extends Activity {
                     wifi_result.setText("(".concat(Integer.toString(wifi_num)).concat(")"));
                     poop_result.setText("(".concat(Integer.toString(poop_num)).concat(")"));
                     toilet_result.setText("(".concat(Integer.toString(toilet_num)).concat(")"));
-                    num_visitors.setText("Number of Visitors: ".concat(Integer.toString(counter)));
+                    if(first_time)
+                        num_visitors.setText("Number of Visitors: ".concat(Integer.toString(counter-1)));
+                    else
+                        num_visitors.setText("Number of Visitors: ".concat(Integer.toString(counter)));
                     //Set rating back to default
                     ratingBar.setRating(3);
                 }
