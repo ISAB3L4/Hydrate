@@ -51,6 +51,7 @@
     <string name="wifi">Wifi available?</string>
     <string name="smell">Does is it smell bad?</string>
     <string name="paper">Is there toilet paper?</string>
+    <string name="visit">Number of Visitors: </string>
 
 
 </resources>

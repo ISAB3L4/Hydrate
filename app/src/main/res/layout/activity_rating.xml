@@ -11,7 +11,7 @@
     android:background="@android:color/white"
     android:clickable="false"
     android:orientation="vertical">
-
+<!--
     <TextView android:text="@string/locator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,27 +19,21 @@
         android:textColor="@android:color/black"
         android:textSize="25sp"
         />
-    <!--Displays location you're at-->
+    Displays location you're at
     <TextView android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="25sp"
-        />
-
+        />-->
     <!--Display current rating-->
-<GridLayout
-    android:layout_width="wrap_content"
-    android:layout_height="50dp"
-    android:orientation="horizontal">
-
+    <!-- Display Current average rating of location-->
     <TextView android:text="@string/currentrate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="25sp"
-        />
+        android:textSize="25sp"/>
+
 <!-- Display Current average rating of location-->
     <TextView android:id="@+id/display_rating"
         android:layout_width="match_parent"
@@ -47,22 +41,20 @@
         android:textColor="@android:color/black"
         android:textSize="25sp"/>
 
-</GridLayout>
 
-
-    <!-- Tell them to leave their own rating-->
+    <!-- Tell them to leave their own rating
     <TextView android:text="@string/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@android:color/black"
         android:textSize="25sp"
-        android:paddingTop="20dp"/>
+        android:paddingTop="20dp"/>-->
 
     <!--Clickable start rating button -->
     <RatingBar android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
-        android:paddingTop="10dp"
+        android:paddingTop="25dp"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
@@ -71,8 +63,7 @@
         android:stepSize="1"
         android:progressTint="@android:color/holo_red_dark"
         android:clickable="true"
-        android:background="@android:color/white"
-        android:rating="3" />
+        android:background="@android:color/white"/>
 
     <!--Label for Tags -->
     <TextView android:text="@string/tag"
@@ -160,5 +151,12 @@
         android:textSize="15sp"
         android:layout_gravity="bottom|center_horizontal"/>
 
+    <!-- Display Current average rating of location-->
+    <TextView android:text="@string/visit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        android:paddingTop="50dp"/>
 
 </LinearLayout>
