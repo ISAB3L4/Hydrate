@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Page layout for floor 3-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
+        <!--Button for fountain-->
         <Button
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -19,6 +20,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="7dp" />
 
+        <!--Button for women's bathroom-->
         <Button
             android:layout_width="25dp"
             android:layout_height="50dp"
@@ -29,6 +31,7 @@
             android:layout_alignStart="@+id/f_3_3"
             android:layout_marginStart="28dp" />
 
+        <!--Button for men's bathroom-->
         <Button
             android:layout_width="25dp"
             android:layout_height="50dp"

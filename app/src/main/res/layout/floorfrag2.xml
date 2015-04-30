@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Layout for page 2-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
+        <!--Button for fountain-->
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -19,6 +20,7 @@
             android:layout_alignStart="@+id/f_2_2"
             android:layout_marginStart="11dp" />
 
+        <!--Button for women's bathroom-->
         <Button
             android:layout_width="25dp"
             android:layout_height="50dp"
@@ -29,6 +31,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/f_2_3" />
 
+        <!--Button for men's bathroom-->
         <Button
             android:layout_width="25dp"
             android:layout_height="50dp"
